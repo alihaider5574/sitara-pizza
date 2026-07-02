@@ -34,7 +34,7 @@ function StepIndicator({ step }) {
         return (
           <div key={label} className="flex items-center gap-2">
             <div className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-display font-semibold transition-all ${
-              isActive ? 'bg-neon-primary text-white shadow-glow-primary' :
+              isActive ? 'bg-neon-primary text-text-primary shadow-glow-primary' :
               isCompleted ? 'bg-neon-primary/20 text-neon-primary' :
               'bg-bg-elevated text-text-muted'
             }`}>
@@ -93,7 +93,7 @@ export default function Checkout() {
       <div className="page-bg pt-24 flex items-center justify-center min-h-screen">
         <div className="text-center">
           <div className="text-6xl mb-4">🛒</div>
-          <h2 className="font-display font-bold text-white text-xl mb-2">Your cart is empty</h2>
+          <h2 className="font-display font-bold text-text-primary text-xl mb-2">Your cart is empty</h2>
           <Button variant="neon" onClick={() => navigate('/menu')} id="checkout-back-to-menu">
             Browse Menu
           </Button>
@@ -111,7 +111,7 @@ export default function Checkout() {
       className="page-bg pt-20 pb-12"
     >
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
-        <h1 className="font-display font-bold text-3xl text-white mb-2">Checkout</h1>
+        <h1 className="font-display font-bold text-3xl text-text-primary mb-2">Checkout</h1>
         <p className="text-text-secondary font-body mb-8">Complete your order below.</p>
 
         <StepIndicator step={step} />
@@ -131,7 +131,7 @@ export default function Checkout() {
                   <div className="glass-card p-6">
                     <div className="flex items-center gap-2 mb-5">
                       <MapPin className="w-5 h-5 text-neon-primary" />
-                      <h2 className="font-display font-semibold text-white">Delivery Address</h2>
+                      <h2 className="font-display font-semibold text-text-primary">Delivery Address</h2>
                     </div>
 
                     <form onSubmit={handleSubmit(onAddressSubmit)} className="space-y-4">
@@ -143,7 +143,7 @@ export default function Checkout() {
                           {...register('label')}
                           id="checkout-address-label"
                           placeholder="Home, Work, etc."
-                          className="w-full bg-bg-elevated border border-white/8 rounded-xl px-4 py-3 text-white text-sm font-body focus:border-neon-primary/40 transition-colors"
+                          className="w-full bg-bg-elevated border border-white/8 rounded-xl px-4 py-3 text-text-primary text-sm font-body focus:border-neon-primary/40 transition-colors"
                         />
                       </div>
                       <div>
@@ -155,7 +155,7 @@ export default function Checkout() {
                           id="checkout-address-line"
                           rows={3}
                           placeholder="Street, Building, Area..."
-                          className="w-full bg-bg-elevated border border-white/8 rounded-xl px-4 py-3 text-white text-sm font-body focus:border-neon-primary/40 transition-colors resize-none"
+                          className="w-full bg-bg-elevated border border-white/8 rounded-xl px-4 py-3 text-text-primary text-sm font-body focus:border-neon-primary/40 transition-colors resize-none"
                         />
                         {errors.address_line && (
                           <p className="text-red-400 text-xs mt-1">{errors.address_line.message}</p>
@@ -169,7 +169,7 @@ export default function Checkout() {
                           {...register('city')}
                           id="checkout-city"
                           placeholder="Karachi"
-                          className="w-full bg-bg-elevated border border-white/8 rounded-xl px-4 py-3 text-white text-sm font-body focus:border-neon-primary/40 transition-colors"
+                          className="w-full bg-bg-elevated border border-white/8 rounded-xl px-4 py-3 text-text-primary text-sm font-body focus:border-neon-primary/40 transition-colors"
                         />
                         {errors.city && (
                           <p className="text-red-400 text-xs mt-1">{errors.city.message}</p>
@@ -199,7 +199,7 @@ export default function Checkout() {
                   <div className="glass-card p-6">
                     <div className="flex items-center gap-2 mb-5">
                       <CreditCard className="w-5 h-5 text-neon-primary" />
-                      <h2 className="font-display font-semibold text-white">Payment Method</h2>
+                      <h2 className="font-display font-semibold text-text-primary">Payment Method</h2>
                     </div>
 
                     <div className="space-y-3 mb-6">
@@ -216,7 +216,7 @@ export default function Checkout() {
                         >
                           <span className="text-2xl">{method.icon}</span>
                           <div>
-                            <div className={`font-display font-semibold text-sm ${paymentMethod === method.id ? 'text-neon-primary' : 'text-white'}`}>
+                            <div className={`font-display font-semibold text-sm ${paymentMethod === method.id ? 'text-neon-primary' : 'text-text-primary'}`}>
                               {method.label}
                             </div>
                             <div className="text-text-muted text-xs font-body">{method.description}</div>
@@ -237,7 +237,7 @@ export default function Checkout() {
                           placeholder="SITARA20"
                           value={promoCode}
                           onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-                          className="flex-1 bg-bg-elevated border border-white/8 rounded-xl px-4 py-3 text-white text-sm font-body focus:border-neon-primary/40 transition-colors uppercase"
+                          className="flex-1 bg-bg-elevated border border-white/8 rounded-xl px-4 py-3 text-text-primary text-sm font-body focus:border-neon-primary/40 transition-colors uppercase"
                         />
                         <Button variant="outline" id="checkout-apply-promo">Apply</Button>
                       </div>
@@ -275,19 +275,19 @@ export default function Checkout() {
                   <div className="glass-card p-6">
                     <div className="flex items-center gap-2 mb-5">
                       <CheckCircle className="w-5 h-5 text-neon-primary" />
-                      <h2 className="font-display font-semibold text-white">Review & Place Order</h2>
+                      <h2 className="font-display font-semibold text-text-primary">Review & Place Order</h2>
                     </div>
 
                     {/* Address summary */}
                     <div className="glass p-4 rounded-xl mb-4">
                       <div className="text-text-muted text-xs font-body mb-1 uppercase tracking-wider">Delivering To</div>
-                      <div className="text-white text-sm font-body">{address?.address_line}, {address?.city}</div>
+                      <div className="text-text-primary text-sm font-body">{address?.address_line}, {address?.city}</div>
                     </div>
 
                     {/* Payment summary */}
                     <div className="glass p-4 rounded-xl mb-6">
                       <div className="text-text-muted text-xs font-body mb-1 uppercase tracking-wider">Payment</div>
-                      <div className="text-white text-sm font-body">
+                      <div className="text-text-primary text-sm font-body">
                         {PAYMENT_METHODS.find((m) => m.id === paymentMethod)?.label}
                       </div>
                     </div>
@@ -320,7 +320,7 @@ export default function Checkout() {
           {/* Order summary sidebar */}
           <div className="lg:col-span-1">
             <div className="glass-card p-5 sticky top-24">
-              <h3 className="font-display font-semibold text-white mb-4">Order Summary</h3>
+              <h3 className="font-display font-semibold text-text-primary mb-4">Order Summary</h3>
               <div className="space-y-2 mb-4 max-h-60 overflow-y-auto pr-1">
                 {items.map((item) => (
                   <div key={item._key} className="flex justify-between text-xs font-body">
@@ -328,7 +328,7 @@ export default function Checkout() {
                       {item.quantity}× {item.name}
                       {item.variant && ` (${item.variant.name})`}
                     </span>
-                    <span className="text-white flex-shrink-0">
+                    <span className="text-text-primary flex-shrink-0">
                       PKR {((item.base_price + (item.variant?.price_delta || 0) + (item.addons || []).reduce((s, a) => s + a.price, 0)) * item.quantity).toLocaleString()}
                     </span>
                   </div>
@@ -338,16 +338,16 @@ export default function Checkout() {
               <div className="space-y-1 text-sm font-body">
                 <div className="flex justify-between">
                   <span className="text-text-secondary">Subtotal</span>
-                  <span className="text-white">PKR {subtotal.toLocaleString()}</span>
+                  <span className="text-text-primary">PKR {subtotal.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-text-secondary">Delivery</span>
-                  <span className="text-white">PKR {DELIVERY_FEE}</span>
+                  <span className="text-text-primary">PKR {DELIVERY_FEE}</span>
                 </div>
               </div>
               <div className="neon-divider my-3" />
               <div className="flex justify-between font-display font-bold">
-                <span className="text-white">Total</span>
+                <span className="text-text-primary">Total</span>
                 <span className="text-neon-primary text-lg">PKR {total.toLocaleString()}</span>
               </div>
             </div>

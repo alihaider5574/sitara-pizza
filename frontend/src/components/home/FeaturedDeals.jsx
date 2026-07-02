@@ -33,7 +33,7 @@ function DealCard({ item, index }) {
       </div>
 
       <div className="p-4">
-        <h3 className="font-display font-semibold text-white text-sm line-clamp-1 mb-1">
+        <h3 className="font-display font-semibold text-text-primary text-sm line-clamp-1 mb-1">
           {item.name}
         </h3>
         <p className="text-text-muted text-xs font-body line-clamp-2 mb-3">
@@ -51,7 +51,7 @@ function DealCard({ item, index }) {
           <Link
             to={`/menu`}
             id={`deal-card-${item.id}`}
-            className="text-xs font-display font-semibold text-neon-primary hover:text-white transition-colors flex items-center gap-1"
+            className="text-xs font-display font-semibold text-neon-primary hover:text-text-primary transition-colors flex items-center gap-1"
           >
             Order <ArrowRight className="w-3 h-3" />
           </Link>
@@ -80,7 +80,7 @@ export default function FeaturedDeals() {
                 🔥 Hot Deals
               </span>
             </div>
-            <h2 className="section-title text-3xl sm:text-4xl text-white">
+            <h2 className="section-title text-3xl sm:text-4xl text-text-primary">
               Today's Best <span className="neon-text">Offers</span>
             </h2>
             <p className="text-text-secondary text-sm font-body mt-2">
@@ -90,7 +90,7 @@ export default function FeaturedDeals() {
           <Link
             to="/menu?category=deals"
             id="view-all-deals-btn"
-            className="hidden sm:flex items-center gap-2 text-neon-primary hover:text-white font-display font-semibold text-sm transition-colors"
+            className="hidden sm:flex items-center gap-2 text-neon-primary hover:text-text-primary font-display font-semibold text-sm transition-colors"
           >
             View All <ArrowRight className="w-4 h-4" />
           </Link>

@@ -31,7 +31,7 @@ function CartItemRow({ item }) {
 
       {/* Details */}
       <div className="flex-1 min-w-0">
-        <h4 className="font-display font-semibold text-white text-xs leading-snug line-clamp-1">
+        <h4 className="font-display font-semibold text-text-primary text-xs leading-snug line-clamp-1">
           {item.name}
         </h4>
         {item.variant && (
@@ -49,17 +49,17 @@ function CartItemRow({ item }) {
             <button
               id={`cart-qty-dec-${item._key}`}
               onClick={() => updateQuantity(item._key, item.quantity - 1)}
-              className="w-6 h-6 flex items-center justify-center text-text-secondary hover:text-white transition-colors"
+              className="w-6 h-6 flex items-center justify-center text-text-secondary hover:text-text-primary transition-colors"
             >
               <Minus className="w-3 h-3" />
             </button>
-            <span className="font-display font-bold text-white text-xs w-4 text-center">
+            <span className="font-display font-bold text-text-primary text-xs w-4 text-center">
               {item.quantity}
             </span>
             <button
               id={`cart-qty-inc-${item._key}`}
               onClick={() => updateQuantity(item._key, item.quantity + 1)}
-              className="w-6 h-6 flex items-center justify-center text-neon-primary hover:text-white transition-colors"
+              className="w-6 h-6 flex items-center justify-center text-neon-primary hover:text-text-primary transition-colors"
             >
               <Plus className="w-3 h-3" />
             </button>
@@ -122,7 +122,7 @@ export default function CartDrawer() {
             <div className="flex items-center justify-between px-5 py-4 border-b border-white/5">
               <div className="flex items-center gap-2">
                 <ShoppingBag className="w-5 h-5 text-neon-primary" />
-                <h2 className="font-display font-bold text-white">
+                <h2 className="font-display font-bold text-text-primary">
                   Your Cart
                   {items.length > 0 && (
                     <span className="ml-2 text-sm text-text-secondary font-body font-normal">
@@ -144,7 +144,7 @@ export default function CartDrawer() {
                 <button
                   id="cart-close-btn"
                   onClick={closeCart}
-                  className="w-8 h-8 rounded-lg glass flex items-center justify-center text-text-secondary hover:text-white transition-all"
+                  className="w-8 h-8 rounded-lg glass flex items-center justify-center text-text-secondary hover:text-text-primary transition-all"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -157,7 +157,7 @@ export default function CartDrawer() {
                 <div className="flex flex-col items-center justify-center h-full gap-4 text-center">
                   <span className="text-6xl">🛒</span>
                   <div>
-                    <p className="font-display font-semibold text-white text-base">Your cart is empty</p>
+                    <p className="font-display font-semibold text-text-primary text-base">Your cart is empty</p>
                     <p className="text-text-muted text-sm font-body mt-1">
                       Add items from the menu to get started
                     </p>
@@ -181,15 +181,15 @@ export default function CartDrawer() {
                 <div className="space-y-1.5">
                   <div className="flex justify-between text-sm font-body">
                     <span className="text-text-secondary">Subtotal</span>
-                    <span className="text-white">PKR {subtotal.toLocaleString()}</span>
+                    <span className="text-text-primary">PKR {subtotal.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between text-sm font-body">
                     <span className="text-text-secondary">Delivery</span>
-                    <span className="text-white">PKR {DELIVERY_FEE}</span>
+                    <span className="text-text-primary">PKR {DELIVERY_FEE}</span>
                   </div>
                   <div className="neon-divider" />
                   <div className="flex justify-between font-display font-bold">
-                    <span className="text-white">Total</span>
+                    <span className="text-text-primary">Total</span>
                     <span className="text-neon-primary text-lg">PKR {total.toLocaleString()}</span>
                   </div>
                 </div>

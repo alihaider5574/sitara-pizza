@@ -31,7 +31,7 @@ export default function OrderStatusTracker({ status = 'pending', orderId }) {
     <div className="glass-card p-6">
       {/* Order ID */}
       <div className="flex items-center justify-between mb-6">
-        <h3 className="font-display font-bold text-white">Live Order Status</h3>
+        <h3 className="font-display font-bold text-text-primary">Live Order Status</h3>
         <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-neon-cyan/10 border border-neon-cyan/25">
           <span className="w-2 h-2 rounded-full bg-neon-cyan animate-pulse" />
           <span className="text-neon-cyan text-xs font-bold">Live</span>
@@ -55,10 +55,10 @@ export default function OrderStatusTracker({ status = 'pending', orderId }) {
                   transition={{ repeat: Infinity, duration: 2 }}
                   className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-all ${
                     isCompleted
-                      ? 'bg-neon-primary text-white shadow-glow-primary'
+                      ? 'bg-neon-primary text-text-primary shadow-glow-primary'
                       : isActive
                       ? 'bg-neon-primary/20 border-2 border-neon-primary text-neon-primary animate-pulse-glow'
-                      : 'bg-bg-elevated border border-white/10 text-text-muted'
+                      : 'bg-bg-elevated border border-gray-200 text-text-muted'
                   }`}
                 >
                   <StepIcon className="w-4 h-4" />
@@ -76,7 +76,7 @@ export default function OrderStatusTracker({ status = 'pending', orderId }) {
               <div className={`pb-5 ${index === STEPS.length - 1 ? 'pb-0' : ''}`}>
                 <div className={`font-display font-semibold text-sm ${
                   isActive ? 'text-neon-primary' :
-                  isCompleted ? 'text-white' : 'text-text-muted'
+                  isCompleted ? 'text-text-primary' : 'text-text-muted'
                 }`}>
                   {step.label}
                   {isActive && (

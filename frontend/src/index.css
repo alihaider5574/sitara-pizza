@@ -6,20 +6,16 @@
 
 /* ─── Root Variables ──────────────────────────────────────────────────────── */
 :root {
-  --bg-base: #0A0A12;
-  --bg-surface: #12121C;
-  --bg-elevated: #1A1A28;
+  --bg-base: #F9FAFB;
+  --bg-surface: #FFFFFF;
+  --bg-elevated: #FFFFFF;
 
-  --neon-primary: #FF4D2E;
-  --neon-secondary: #7B2FFF;
-  --neon-cyan: #00E5FF;
+  --brand-primary: #E11D48;
+  --brand-secondary: #F59E0B;
+  --brand-accent: #10B981;
 
-  --glass-bg: rgba(255, 255, 255, 0.04);
-  --glass-border: rgba(255, 255, 255, 0.08);
-
-  --glow-primary: 0 0 20px rgba(255, 77, 46, 0.45), 0 0 60px rgba(255, 77, 46, 0.15);
-  --glow-secondary: 0 0 20px rgba(123, 47, 255, 0.45);
-  --glow-cyan: 0 0 20px rgba(0, 229, 255, 0.40);
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(0, 0, 0, 0.05);
 
   --font-display: 'Space Grotesk', sans-serif;
   --font-body: 'Inter', sans-serif;
@@ -43,7 +39,7 @@ html {
 body {
   margin: 0;
   background: var(--bg-base);
-  color: #F0F0FF;
+  color: #111827;
   font-family: var(--font-body);
   min-height: 100vh;
   overflow-x: hidden;
@@ -52,85 +48,74 @@ body {
 /* ─── Glass Panel ─────────────────────────────────────────────────────────── */
 .glass {
   background: var(--glass-bg);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-card);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
 }
 
 .glass-card {
-  background: rgba(18, 18, 28, 0.8);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.05);
   border-radius: var(--radius-card);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   transition: box-shadow var(--transition-base), transform var(--transition-base), border-color var(--transition-base);
 }
 
 .glass-card:hover {
-  border-color: rgba(255, 77, 46, 0.3);
-  box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 0 24px rgba(255,77,46,0.15);
+  border-color: rgba(225, 29, 72, 0.2);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-/* ─── Neon Text ──────────────────────────────────────────────────────────── */
+/* ─── Brand Text ──────────────────────────────────────────────────────────── */
 .neon-text {
-  background: linear-gradient(135deg, #FF4D2E 0%, #FF8C6B 50%, #7B2FFF 100%);
+  /* Renamed concept but keeping class name for compatibility to minimize churn */
+  background: linear-gradient(135deg, #E11D48 0%, #F43F5E 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .neon-text-cyan {
-  background: linear-gradient(135deg, #00E5FF, #7B2FFF);
+  background: linear-gradient(135deg, #10B981, #059669);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* ─── Neon Button ─────────────────────────────────────────────────────────── */
+/* ─── Primary Button ──────────────────────────────────────────────────────── */
 .btn-neon {
+  /* Renamed concept but keeping class name */
   position: relative;
-  background: linear-gradient(135deg, #FF4D2E 0%, #7B2FFF 100%);
-  background-size: 200% 200%;
+  background: var(--brand-primary);
   color: white;
   font-family: var(--font-display);
   font-weight: 600;
   border: none;
   border-radius: 0.75rem;
   cursor: pointer;
-  transition: background-position var(--transition-slow), box-shadow var(--transition-base), transform 150ms ease;
+  transition: background-color var(--transition-base), box-shadow var(--transition-base), transform 150ms ease;
   overflow: hidden;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
 .btn-neon:hover {
-  background-position: right center;
-  box-shadow: var(--glow-primary);
-  transform: translateY(-2px);
+  background: #BE123C;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transform: translateY(-1px);
 }
 
 .btn-neon:active {
   transform: translateY(0);
 }
 
-.btn-neon::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at center, rgba(255,255,255,0.2) 0%, transparent 70%);
-  opacity: 0;
-  transition: opacity 200ms;
-}
-
-.btn-neon:active::after {
-  opacity: 1;
-}
-
 /* ─── Skeleton Loader ─────────────────────────────────────────────────────── */
 .skeleton {
   background: linear-gradient(90deg,
-    rgba(255,255,255,0.04) 25%,
-    rgba(255,255,255,0.08) 50%,
-    rgba(255,255,255,0.04) 75%
+    rgba(0,0,0,0.04) 25%,
+    rgba(0,0,0,0.08) 50%,
+    rgba(0,0,0,0.04) 75%
   );
   background-size: 200% 100%;
   animation: shimmer 1.8s ease-in-out infinite;
@@ -139,8 +124,8 @@ body {
 
 /* ─── Scrollbar ───────────────────────────────────────────────────────────── */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -148,12 +133,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255,77,46,0.4);
-  border-radius: 3px;
+  background: rgba(156, 163, 175, 0.5);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255,77,46,0.7);
+  background: rgba(107, 114, 128, 0.8);
 }
 
 /* ─── Input Reset ─────────────────────────────────────────────────────────── */
@@ -166,19 +151,19 @@ input:focus, textarea:focus, select:focus {
   ring: none;
 }
 
-/* ─── Neon Divider ────────────────────────────────────────────────────────── */
+/* ─── Brand Divider ───────────────────────────────────────────────────────── */
 .neon-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,77,46,0.4), rgba(123,47,255,0.4), transparent);
+  background: rgba(0, 0, 0, 0.05);
 }
 
 /* ─── Page Wrapper ────────────────────────────────────────────────────────── */
 .page-bg {
   min-height: 100vh;
-  background: linear-gradient(160deg, #0A0A12 0%, #0E0E1A 50%, #12121C 100%);
+  background: linear-gradient(160deg, #F9FAFB 0%, #F3F4F6 100%);
 }
 
-/* ─── Glow Orbs (decorative bg) ──────────────────────────────────────────── */
+/* ─── Decorative Orbs (Light Mode) ───────────────────────────────────────── */
 .glow-orb {
   position: absolute;
   border-radius: 50%;
@@ -188,11 +173,11 @@ input:focus, textarea:focus, select:focus {
 }
 
 .glow-orb-primary {
-  background: rgba(255, 77, 46, 0.12);
+  background: rgba(225, 29, 72, 0.08); /* Faint red */
 }
 
 .glow-orb-secondary {
-  background: rgba(123, 47, 255, 0.10);
+  background: rgba(245, 158, 11, 0.05); /* Faint amber */
 }
 
 /* ─── Section Title ───────────────────────────────────────────────────────── */
@@ -200,11 +185,12 @@ input:focus, textarea:focus, select:focus {
   font-family: var(--font-display);
   font-weight: 700;
   letter-spacing: -0.02em;
+  color: #111827;
 }
 
 /* ─── Badge ───────────────────────────────────────────────────────────────── */
 .badge-hot {
-  background: linear-gradient(135deg, #FF4D2E, #FF8C6B);
+  background: #E11D48;
   color: white;
   font-size: 0.65rem;
   font-weight: 700;
@@ -215,7 +201,7 @@ input:focus, textarea:focus, select:focus {
 }
 
 .badge-new {
-  background: linear-gradient(135deg, #7B2FFF, #00E5FF);
+  background: #10B981;
   color: white;
   font-size: 0.65rem;
   font-weight: 700;
@@ -226,9 +212,9 @@ input:focus, textarea:focus, select:focus {
 }
 
 .badge-veg {
-  background: rgba(0, 200, 100, 0.15);
-  border: 1px solid rgba(0, 200, 100, 0.4);
-  color: #00C864;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #059669;
   font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 0.05em;

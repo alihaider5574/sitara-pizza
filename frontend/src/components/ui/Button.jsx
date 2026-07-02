@@ -32,8 +32,8 @@ const Button = forwardRef(({
   }
 
   const variants = {
-    neon: 'btn-neon text-white shadow-card',
-    ghost: 'bg-transparent text-text-secondary hover:text-white hover:bg-white/6',
+    neon: 'btn-neon text-text-primary shadow-card',
+    ghost: 'bg-transparent text-text-secondary hover:text-text-primary hover:bg-white/6',
     outline: 'bg-transparent text-neon-primary border border-neon-primary/40 hover:bg-neon-primary/10 hover:border-neon-primary',
     danger: 'bg-red-500/10 text-red-400 border border-red-500/30 hover:bg-red-500/20',
   }

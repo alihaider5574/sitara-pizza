@@ -18,7 +18,7 @@ function NotFound() {
     <div className="page-bg min-h-screen flex items-center justify-center text-center">
       <div>
         <div className="text-8xl mb-4 font-display font-bold neon-text">404</div>
-        <h1 className="font-display font-bold text-white text-2xl mb-2">Page Not Found</h1>
+        <h1 className="font-display font-bold text-text-primary text-2xl mb-2">Page Not Found</h1>
         <p className="text-text-muted font-body mb-6">The page you're looking for doesn't exist.</p>
         <a href="/" className="btn-neon px-6 py-3 rounded-xl inline-block font-display font-semibold text-sm">
           Go Home

@@ -34,7 +34,7 @@ function LoyaltyRing({ points = 0, maxPoints = 1000 }) {
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <Star className="w-4 h-4 text-neon-primary mb-0.5" />
-          <span className="font-display font-bold text-white text-sm">{points}</span>
+          <span className="font-display font-bold text-text-primary text-sm">{points}</span>
           <span className="text-text-muted text-[10px] font-body">pts</span>
         </div>
       </div>
@@ -77,11 +77,11 @@ export default function Account() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
         {/* Profile header */}
         <div className="glass-card p-6 mb-6 flex items-center gap-6 flex-wrap">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-neon flex items-center justify-center text-white font-display font-bold text-2xl shadow-glow-primary flex-shrink-0">
+          <div className="w-16 h-16 rounded-2xl bg-gradient-neon flex items-center justify-center text-text-primary font-display font-bold text-2xl shadow-glow-primary flex-shrink-0">
             {user?.email?.[0]?.toUpperCase() || 'U'}
           </div>
           <div className="flex-1">
-            <h1 className="font-display font-bold text-xl text-white">
+            <h1 className="font-display font-bold text-xl text-text-primary">
               {user?.user_metadata?.full_name || 'Sitara Customer'}
             </h1>
             <p className="text-text-secondary font-body text-sm">{user?.email}</p>
@@ -99,7 +99,7 @@ export default function Account() {
         </div>
 
         {/* Order history */}
-        <h2 className="font-display font-bold text-white text-lg mb-4 flex items-center gap-2">
+        <h2 className="font-display font-bold text-text-primary text-lg mb-4 flex items-center gap-2">
           <Package className="w-5 h-5 text-neon-primary" />
           Order History
         </h2>
@@ -109,10 +109,10 @@ export default function Account() {
             <div key={order.id} className="glass-card p-5 flex items-center gap-4 flex-wrap">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-3 mb-1">
-                  <span className="font-display font-semibold text-white text-sm font-mono">
+                  <span className="font-display font-semibold text-text-primary text-sm font-mono">
                     #{order.id.slice(4).toUpperCase()}
                   </span>
-                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${STATUS_COLORS[order.status] || 'text-text-muted bg-white/5'}`}>
+                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${STATUS_COLORS[order.status] || 'text-text-muted bg-gray-100'}`}>
                     {order.status.replace(/_/g, ' ')}
                   </span>
                 </div>
@@ -127,7 +127,7 @@ export default function Account() {
                 <Link
                   to={`/track/${order.id}`}
                   id={`account-track-${order.id}`}
-                  className="text-xs text-text-secondary hover:text-white transition-colors font-body"
+                  className="text-xs text-text-secondary hover:text-text-primary transition-colors font-body"
                 >
                   View →
                 </Link>

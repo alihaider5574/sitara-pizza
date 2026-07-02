@@ -67,18 +67,18 @@ export default function Modal({ isOpen, onClose, title, size = 'md', children, i
             initial="initial"
             animate="animate"
             exit="exit"
-            className={`relative w-full ${sizeClasses[size]} glass border border-white/10 shadow-glass max-h-[90vh] overflow-y-auto`}
+            className={`relative w-full ${sizeClasses[size]} glass border border-gray-200 shadow-glass max-h-[90vh] overflow-y-auto`}
           >
             {/* Header */}
             {title && (
               <div className="flex items-center justify-between p-5 border-b border-white/5">
-                <h2 id={`${id}-title`} className="font-display font-bold text-lg text-white">
+                <h2 id={`${id}-title`} className="font-display font-bold text-lg text-text-primary">
                   {title}
                 </h2>
                 <button
                   onClick={onClose}
                   id={`${id}-close`}
-                  className="w-8 h-8 rounded-lg text-text-secondary hover:text-white hover:bg-white/5 flex items-center justify-center transition-all"
+                  className="w-8 h-8 rounded-lg text-text-secondary hover:text-text-primary hover:bg-gray-100 flex items-center justify-center transition-all"
                   aria-label="Close modal"
                 >
                   <X className="w-4 h-4" />

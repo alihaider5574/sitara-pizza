@@ -59,11 +59,11 @@ export default function Login() {
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center gap-2 mb-6">
             <div className="w-10 h-10 rounded-xl bg-gradient-neon flex items-center justify-center shadow-glow-primary">
-              <Zap className="w-5 h-5 text-white" />
+              <Zap className="w-5 h-5 text-text-primary" />
             </div>
-            <span className="font-display font-bold text-xl text-white">Sitara</span>
+            <span className="font-display font-bold text-xl text-text-primary">Sitara</span>
           </Link>
-          <h1 className="font-display font-bold text-2xl text-white">Welcome Back</h1>
+          <h1 className="font-display font-bold text-2xl text-text-primary">Welcome Back</h1>
           <p className="text-text-secondary font-body text-sm mt-1">Sign in to your account</p>
         </div>
 
@@ -72,7 +72,7 @@ export default function Login() {
           <button
             id="login-google-btn"
             onClick={handleGoogle}
-            className="w-full flex items-center justify-center gap-3 py-3 px-4 rounded-xl border border-white/10 bg-white/4 hover:bg-white/8 hover:border-white/20 text-white font-body text-sm transition-all mb-5"
+            className="w-full flex items-center justify-center gap-3 py-3 px-4 rounded-xl border border-gray-200 bg-white/4 hover:bg-white/8 hover:border-white/20 text-text-primary font-body text-sm transition-all mb-5"
           >
             <svg className="w-4 h-4" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -99,7 +99,7 @@ export default function Login() {
                 type="email"
                 autoComplete="email"
                 placeholder="you@example.com"
-                className="w-full bg-bg-elevated border border-white/8 rounded-xl px-4 py-3 text-white text-sm font-body focus:border-neon-primary/40 transition-colors"
+                className="w-full bg-bg-elevated border border-white/8 rounded-xl px-4 py-3 text-text-primary text-sm font-body focus:border-neon-primary/40 transition-colors"
               />
               {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email.message}</p>}
             </div>
@@ -113,13 +113,13 @@ export default function Login() {
                   type={showPassword ? 'text' : 'password'}
                   autoComplete="current-password"
                   placeholder="••••••••"
-                  className="w-full bg-bg-elevated border border-white/8 rounded-xl px-4 py-3 pr-10 text-white text-sm font-body focus:border-neon-primary/40 transition-colors"
+                  className="w-full bg-bg-elevated border border-white/8 rounded-xl px-4 py-3 pr-10 text-text-primary text-sm font-body focus:border-neon-primary/40 transition-colors"
                 />
                 <button
                   type="button"
                   id="login-toggle-password"
                   onClick={() => setShowPassword((v) => !v)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-white transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary transition-colors"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -141,7 +141,7 @@ export default function Login() {
 
           <p className="text-center text-text-secondary font-body text-sm mt-5">
             Don't have an account?{' '}
-            <Link to="/signup" id="login-signup-link" className="text-neon-primary hover:text-white transition-colors font-semibold">
+            <Link to="/signup" id="login-signup-link" className="text-neon-primary hover:text-text-primary transition-colors font-semibold">
               Sign Up
             </Link>
           </p>

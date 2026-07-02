@@ -27,7 +27,7 @@ export default function Home() {
 
             <div className="relative z-10">
               <span className="inline-block badge-hot mb-4 text-sm">Limited Time</span>
-              <h2 className="font-display font-bold text-3xl sm:text-5xl text-white mb-4 leading-tight">
+              <h2 className="font-display font-bold text-3xl sm:text-5xl text-text-primary mb-4 leading-tight">
                 Use Code{' '}
                 <span className="neon-text">SITARA20</span>
                 <br />for 20% Off Your First Order

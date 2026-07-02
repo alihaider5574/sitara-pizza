@@ -61,7 +61,7 @@ function StatCard({ icon: Icon, label, value, trend, color = 'primary' }) {
           </span>
         )}
       </div>
-      <div className="font-display font-bold text-2xl text-white">{value}</div>
+      <div className="font-display font-bold text-2xl text-text-primary">{value}</div>
       <div className="text-text-muted text-xs font-body mt-1">{label}</div>
     </div>
   )
@@ -123,7 +123,7 @@ export default function AdminDashboard() {
               className={`flex items-center gap-3 px-3 py-2.5 rounded-xl mb-1 text-sm font-display font-medium transition-all ${
                 activeTab === id
                   ? 'bg-neon-primary/15 text-neon-primary border border-neon-primary/20'
-                  : 'text-text-secondary hover:text-white hover:bg-white/5'
+                  : 'text-text-secondary hover:text-text-primary hover:bg-gray-100'
               }`}
             >
               <Icon className="w-4 h-4" />
@@ -142,7 +142,7 @@ export default function AdminDashboard() {
                 id={`admin-mobile-tab-${id}`}
                 onClick={() => setActiveTab(id)}
                 className={`flex-shrink-0 px-4 py-2 rounded-full text-xs font-display font-semibold transition-all ${
-                  activeTab === id ? 'bg-neon-primary text-white' : 'glass text-text-secondary'
+                  activeTab === id ? 'bg-neon-primary text-text-primary' : 'glass text-text-secondary'
                 }`}
               >
                 {label}
@@ -153,7 +153,7 @@ export default function AdminDashboard() {
           {/* ── Overview ── */}
           {activeTab === 'overview' && (
             <div className="space-y-6">
-              <h1 className="font-display font-bold text-2xl text-white">Dashboard Overview</h1>
+              <h1 className="font-display font-bold text-2xl text-text-primary">Dashboard Overview</h1>
 
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 <StatCard icon={ShoppingBag} label="Today's Orders" value="47" trend="+12%" color="primary" />
@@ -164,7 +164,7 @@ export default function AdminDashboard() {
 
               {/* Sales chart */}
               <div className="glass-card p-6">
-                <h3 className="font-display font-semibold text-white mb-6">Revenue (Last 7 Days)</h3>
+                <h3 className="font-display font-semibold text-text-primary mb-6">Revenue (Last 7 Days)</h3>
                 <ResponsiveContainer width="100%" height={240}>
                   <AreaChart data={SALES_DATA}>
                     <defs>
@@ -184,12 +184,12 @@ export default function AdminDashboard() {
 
               {/* Recent orders */}
               <div className="glass-card p-6">
-                <h3 className="font-display font-semibold text-white mb-4">Recent Orders</h3>
+                <h3 className="font-display font-semibold text-text-primary mb-4">Recent Orders</h3>
                 <div className="space-y-3">
                   {orders.slice(0, 3).map((order) => (
                     <div key={order.id} className="flex items-center gap-4 py-2 border-b border-white/5 last:border-none">
                       <div className="flex-1">
-                        <div className="font-display font-semibold text-white text-sm">{order.customer}</div>
+                        <div className="font-display font-semibold text-text-primary text-sm">{order.customer}</div>
                         <div className="text-text-muted text-xs font-body">#{order.id.slice(4).toUpperCase()} · {order.items} items</div>
                       </div>
                       <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${STATUS_COLORS[order.status] || ''}`}>
@@ -208,13 +208,13 @@ export default function AdminDashboard() {
           {/* ── Orders ── */}
           {activeTab === 'orders' && (
             <div className="space-y-4">
-              <h1 className="font-display font-bold text-2xl text-white">Order Management</h1>
+              <h1 className="font-display font-bold text-2xl text-text-primary">Order Management</h1>
               <div className="space-y-3">
                 {orders.map((order) => (
                   <div key={order.id} className="glass-card p-5 flex items-center gap-4 flex-wrap">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-3 mb-1">
-                        <span className="font-display font-bold text-white text-sm">#{order.id.slice(4).toUpperCase()}</span>
+                        <span className="font-display font-bold text-text-primary text-sm">#{order.id.slice(4).toUpperCase()}</span>
                         <span className="text-text-secondary font-body text-xs">{order.customer}</span>
                       </div>
                       <div className="text-text-muted text-xs font-body">
@@ -230,7 +230,7 @@ export default function AdminDashboard() {
                         id={`admin-order-status-${order.id}`}
                         value={order.status}
                         onChange={(e) => updateOrderStatus(order.id, e.target.value)}
-                        className="appearance-none bg-bg-elevated border border-white/8 rounded-xl pl-3 pr-8 py-2 text-white text-xs font-body focus:border-neon-primary/40 transition-colors cursor-pointer"
+                        className="appearance-none bg-bg-elevated border border-white/8 rounded-xl pl-3 pr-8 py-2 text-text-primary text-xs font-body focus:border-neon-primary/40 transition-colors cursor-pointer"
                       >
                         {STATUS_OPTIONS.map((s) => (
                           <option key={s} value={s}>{s.replace(/_/g, ' ')}</option>
@@ -248,7 +248,7 @@ export default function AdminDashboard() {
           {activeTab === 'menu' && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h1 className="font-display font-bold text-2xl text-white">Menu Management</h1>
+                <h1 className="font-display font-bold text-2xl text-text-primary">Menu Management</h1>
                 <Button variant="neon" size="sm" id="admin-add-item-btn">+ Add Item</Button>
               </div>
               <div className="glass-card overflow-hidden">
@@ -268,7 +268,7 @@ export default function AdminDashboard() {
                       return (
                         <tr key={item.id} className="border-b border-white/5 last:border-none hover:bg-white/2 transition-colors">
                           <td className="py-3 px-4">
-                            <div className="font-display font-semibold text-white text-xs line-clamp-1">{item.name}</div>
+                            <div className="font-display font-semibold text-text-primary text-xs line-clamp-1">{item.name}</div>
                           </td>
                           <td className="py-3 px-4 hidden sm:table-cell">
                             <span className="text-text-secondary text-xs font-body">{category?.name}</span>
@@ -286,7 +286,7 @@ export default function AdminDashboard() {
                               <button
                                 id={`admin-toggle-${item.id}`}
                                 onClick={() => toggleItemAvailability(item.id)}
-                                className="text-xs text-text-secondary hover:text-white transition-colors font-body"
+                                className="text-xs text-text-secondary hover:text-text-primary transition-colors font-body"
                               >
                                 {item.is_available ? 'Disable' : 'Enable'}
                               </button>
@@ -305,7 +305,7 @@ export default function AdminDashboard() {
           {activeTab === 'promos' && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h1 className="font-display font-bold text-2xl text-white">Promo Codes</h1>
+                <h1 className="font-display font-bold text-2xl text-text-primary">Promo Codes</h1>
                 <Button variant="neon" size="sm" id="admin-add-promo-btn">+ Create Promo</Button>
               </div>
               <div className="glass-card p-5">
@@ -330,7 +330,7 @@ export default function AdminDashboard() {
                             {promo.code}
                           </code>
                         </td>
-                        <td className="py-3 px-3 text-white text-xs font-body">{promo.discount}</td>
+                        <td className="py-3 px-3 text-text-primary text-xs font-body">{promo.discount}</td>
                         <td className="py-3 px-3 text-text-secondary text-xs font-body">{promo.min}</td>
                         <td className="py-3 px-3">
                           <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${promo.active ? 'bg-green-400/10 text-green-400' : 'bg-red-400/10 text-red-400'}`}>

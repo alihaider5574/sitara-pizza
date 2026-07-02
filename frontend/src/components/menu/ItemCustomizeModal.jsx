@@ -59,7 +59,7 @@ export default function ItemCustomizeModal({ item, isOpen, onClose }) {
         {/* Variants */}
         {item.variants?.length > 0 && (
           <div>
-            <h4 className="font-display font-semibold text-white text-sm mb-3">Choose Size</h4>
+            <h4 className="font-display font-semibold text-text-primary text-sm mb-3">Choose Size</h4>
             <div className="grid grid-cols-1 gap-2">
               {item.variants.map((variant) => {
                 const isSelected = selectedVariant?.id === variant.id
@@ -70,7 +70,7 @@ export default function ItemCustomizeModal({ item, isOpen, onClose }) {
                     onClick={() => setSelectedVariant(variant)}
                     className={`flex items-center justify-between p-3 rounded-xl border transition-all text-left ${
                       isSelected
-                        ? 'border-neon-primary bg-neon-primary/10 text-white'
+                        ? 'border-neon-primary bg-neon-primary/10 text-text-primary'
                         : 'border-white/8 bg-white/3 text-text-secondary hover:border-white/20'
                     }`}
                   >
@@ -88,7 +88,7 @@ export default function ItemCustomizeModal({ item, isOpen, onClose }) {
         {/* Addons */}
         {item.addons?.length > 0 && (
           <div>
-            <h4 className="font-display font-semibold text-white text-sm mb-3">
+            <h4 className="font-display font-semibold text-text-primary text-sm mb-3">
               Add-ons <span className="text-text-muted font-body font-normal">(optional)</span>
             </h4>
             <div className="grid grid-cols-1 gap-2">
@@ -101,7 +101,7 @@ export default function ItemCustomizeModal({ item, isOpen, onClose }) {
                     onClick={() => toggleAddon(addon)}
                     className={`flex items-center justify-between p-3 rounded-xl border transition-all text-left ${
                       isChecked
-                        ? 'border-neon-secondary bg-neon-secondary/10 text-white'
+                        ? 'border-neon-secondary bg-neon-secondary/10 text-text-primary'
                         : 'border-white/8 bg-white/3 text-text-secondary hover:border-white/20'
                     }`}
                   >
@@ -109,7 +109,7 @@ export default function ItemCustomizeModal({ item, isOpen, onClose }) {
                       <div className={`w-4 h-4 rounded-sm border transition-all flex items-center justify-center ${
                         isChecked ? 'bg-neon-secondary border-neon-secondary' : 'border-white/25'
                       }`}>
-                        {isChecked && <X className="w-3 h-3 text-white" style={{ transform: 'rotate(45deg)' }} />}
+                        {isChecked && <X className="w-3 h-3 text-text-primary" style={{ transform: 'rotate(45deg)' }} />}
                       </div>
                       <span className="font-body text-sm">{addon.name}</span>
                     </div>
@@ -125,20 +125,20 @@ export default function ItemCustomizeModal({ item, isOpen, onClose }) {
 
         {/* Quantity */}
         <div className="flex items-center gap-4">
-          <span className="font-display font-semibold text-white text-sm">Quantity</span>
+          <span className="font-display font-semibold text-text-primary text-sm">Quantity</span>
           <div className="flex items-center gap-3 glass rounded-xl px-1">
             <button
               id="qty-decrease"
               onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-              className="w-8 h-8 flex items-center justify-center text-text-secondary hover:text-white transition-colors"
+              className="w-8 h-8 flex items-center justify-center text-text-secondary hover:text-text-primary transition-colors"
             >
               <Minus className="w-3.5 h-3.5" />
             </button>
-            <span className="font-display font-bold text-white w-6 text-center">{quantity}</span>
+            <span className="font-display font-bold text-text-primary w-6 text-center">{quantity}</span>
             <button
               id="qty-increase"
               onClick={() => setQuantity((q) => Math.min(20, q + 1))}
-              className="w-8 h-8 flex items-center justify-center text-neon-primary hover:text-white transition-colors"
+              className="w-8 h-8 flex items-center justify-center text-neon-primary hover:text-text-primary transition-colors"
             >
               <Plus className="w-3.5 h-3.5" />
             </button>

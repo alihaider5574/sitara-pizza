@@ -46,7 +46,7 @@ export default function Menu() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="font-display font-bold text-3xl sm:text-4xl text-white mb-2">
+          <h1 className="font-display font-bold text-3xl sm:text-4xl text-text-primary mb-2">
             Our <span className="neon-text">Menu</span>
           </h1>
           <p className="text-text-secondary font-body">
@@ -74,7 +74,7 @@ export default function Menu() {
               placeholder="Search pizza, chicken..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-bg-surface border border-white/8 rounded-xl pl-9 pr-4 py-2.5 text-sm text-white placeholder-text-muted font-body focus:border-neon-primary/40 transition-colors"
+              className="w-full bg-bg-surface border border-white/8 rounded-xl pl-9 pr-4 py-2.5 text-sm text-text-primary placeholder-text-muted font-body focus:border-neon-primary/40 transition-colors"
             />
           </div>
         </div>
@@ -109,7 +109,7 @@ export default function Menu() {
               className="text-center py-20"
             >
               <div className="text-5xl mb-4">🔍</div>
-              <h3 className="font-display font-semibold text-white text-lg mb-2">
+              <h3 className="font-display font-semibold text-text-primary text-lg mb-2">
                 No items found
               </h3>
               <p className="text-text-muted font-body text-sm">

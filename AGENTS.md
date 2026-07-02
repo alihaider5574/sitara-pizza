@@ -36,15 +36,15 @@
 - Supabase Storage: menu item images, banners
 - Supabase Realtime: order status live updates
 
-## Design Language — "Futuristic Neon"
-- **Background:** `#0A0A12` base → `#12121C` surfaces
-- **Primary neon:** `#FF4D2E` (electric orange-red — fire/spice brand)
-- **Secondary neon:** `#7B2FFF` (violet accent)
-- **Accent:** `#00E5FF` (cyan — status indicators)
-- **Glassmorphism:** `rgba(255,255,255,0.05)` fill + `backdrop-filter: blur(16px)` + `rgba(255,255,255,0.10)` border
-- **Glow shadows:** `0 0 24px rgba(255,77,46,0.45)` (primary), `0 0 24px rgba(123,47,255,0.40)` (secondary)
+## Design Language — "Professional Light Theme"
+- **Background:** `#F9FAFB` base → `#FFFFFF` surfaces
+- **Primary Brand:** `#E11D48` (professional food red)
+- **Secondary Brand:** `#F59E0B` (warm amber)
+- **Accent:** `#10B981` (emerald green — status indicators)
+- **Glassmorphism:** `rgba(255,255,255,0.7)` fill + `backdrop-filter: blur(12px)` + `rgba(0,0,0,0.05)` border
+- **Shadows:** Standard professional dropshadows (e.g. `0 4px 6px -1px rgba(0,0,0,0.1)`)
 - **Typography:** Space Grotesk (headings) + Inter (body) — both from Google Fonts
-- **Motion:** Framer Motion for UI, GSAP ScrollTrigger for scroll-based hero
+- **Motion:** Framer Motion for UI reveals and page transitions
 
 ## Auth Pattern
 1. Frontend logs in via Supabase Auth → gets JWT

@@ -20,12 +20,12 @@ export default function OrderTracking() {
     >
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-10">
         <div className="mb-8">
-          <h1 className="font-display font-bold text-3xl text-white mb-1">
+          <h1 className="font-display font-bold text-3xl text-text-primary mb-1">
             Track Your <span className="neon-text">Order</span>
           </h1>
           {orderId && (
             <p className="text-text-secondary font-body text-sm">
-              Order <span className="text-white font-mono">#{orderId.slice(0, 8).toUpperCase()}</span>
+              Order <span className="text-text-primary font-mono">#{orderId.slice(0, 8).toUpperCase()}</span>
             </p>
           )}
         </div>
@@ -46,7 +46,7 @@ export default function OrderTracking() {
         ) : !order ? (
           <div className="glass-card p-8 text-center">
             <div className="text-5xl mb-4">🔍</div>
-            <h3 className="font-display font-bold text-white text-lg mb-2">Order not found</h3>
+            <h3 className="font-display font-bold text-text-primary text-lg mb-2">Order not found</h3>
             <p className="text-text-secondary font-body text-sm mb-6">
               We couldn't find this order. Check your order history.
             </p>
@@ -60,15 +60,15 @@ export default function OrderTracking() {
 
             {/* Order details card */}
             <div className="glass-card p-5">
-              <h3 className="font-display font-semibold text-white text-sm mb-3">Order Details</h3>
+              <h3 className="font-display font-semibold text-text-primary text-sm mb-3">Order Details</h3>
               <div className="space-y-1.5 text-sm font-body">
                 <div className="flex justify-between">
                   <span className="text-text-secondary">Subtotal</span>
-                  <span className="text-white">PKR {Number(order.subtotal).toLocaleString()}</span>
+                  <span className="text-text-primary">PKR {Number(order.subtotal).toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-text-secondary">Delivery Fee</span>
-                  <span className="text-white">PKR {Number(order.delivery_fee).toLocaleString()}</span>
+                  <span className="text-text-primary">PKR {Number(order.delivery_fee).toLocaleString()}</span>
                 </div>
                 {order.discount > 0 && (
                   <div className="flex justify-between text-neon-cyan">
@@ -78,7 +78,7 @@ export default function OrderTracking() {
                 )}
                 <div className="neon-divider my-2" />
                 <div className="flex justify-between font-display font-bold">
-                  <span className="text-white">Total</span>
+                  <span className="text-text-primary">Total</span>
                   <span className="text-neon-primary text-base">PKR {Number(order.total).toLocaleString()}</span>
                 </div>
               </div>
@@ -92,7 +92,7 @@ export default function OrderTracking() {
                 className="glass-card p-6 text-center"
               >
                 <div className="text-4xl mb-2">🎉</div>
-                <h3 className="font-display font-bold text-white text-lg mb-1">Enjoy your meal!</h3>
+                <h3 className="font-display font-bold text-text-primary text-lg mb-1">Enjoy your meal!</h3>
                 <p className="text-text-secondary font-body text-sm mb-4">We hope it was amazing.</p>
                 <Link to="/menu">
                   <Button variant="neon" id="track-reorder">Order Again</Button>

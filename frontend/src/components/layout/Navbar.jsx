@@ -42,9 +42,9 @@ export default function Navbar() {
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 group" id="nav-logo">
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-neon-primary to-neon-secondary flex items-center justify-center animate-pulse-glow">
-            <Zap className="w-4 h-4 text-white" />
+            <Zap className="w-4 h-4 text-text-primary" />
           </div>
-          <span className="font-display font-bold text-lg text-white group-hover:neon-text transition-all">
+          <span className="font-display font-bold text-lg text-text-primary group-hover:neon-text transition-all">
             Sitara
           </span>
         </Link>
@@ -60,7 +60,7 @@ export default function Navbar() {
                 `px-4 py-2 rounded-lg text-sm font-medium font-body transition-all ${
                   isActive
                     ? 'text-neon-primary bg-neon-primary/10'
-                    : 'text-text-secondary hover:text-white hover:bg-white/5'
+                    : 'text-text-secondary hover:text-text-primary hover:bg-gray-100'
                 }`
               }
             >
@@ -75,7 +75,7 @@ export default function Navbar() {
           <button
             id="nav-cart-btn"
             onClick={openCart}
-            className="relative p-2 rounded-lg text-text-secondary hover:text-white hover:bg-white/5 transition-all"
+            className="relative p-2 rounded-lg text-text-secondary hover:text-text-primary hover:bg-gray-100 transition-all"
             aria-label="Open cart"
           >
             <ShoppingCart className="w-5 h-5" />
@@ -86,7 +86,7 @@ export default function Navbar() {
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   exit={{ scale: 0 }}
-                  className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-neon-primary text-white text-xs font-bold flex items-center justify-center animate-bounce-subtle"
+                  className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-neon-primary text-text-primary text-xs font-bold flex items-center justify-center animate-bounce-subtle"
                 >
                   {itemCount > 9 ? '9+' : itemCount}
                 </motion.span>
@@ -98,7 +98,7 @@ export default function Navbar() {
           <Link
             to={user ? '/account' : '/login'}
             id="nav-user-btn"
-            className="p-2 rounded-lg text-text-secondary hover:text-white hover:bg-white/5 transition-all"
+            className="p-2 rounded-lg text-text-secondary hover:text-text-primary hover:bg-gray-100 transition-all"
             aria-label={user ? 'Account' : 'Login'}
           >
             <User className="w-5 h-5" />
@@ -116,7 +116,7 @@ export default function Navbar() {
           {/* Mobile menu toggle */}
           <button
             id="nav-mobile-toggle"
-            className="md:hidden p-2 rounded-lg text-text-secondary hover:text-white"
+            className="md:hidden p-2 rounded-lg text-text-secondary hover:text-text-primary"
             onClick={() => setMobileOpen((v) => !v)}
             aria-label="Toggle menu"
           >
@@ -143,7 +143,7 @@ export default function Navbar() {
                   `flex items-center px-4 py-3 rounded-xl my-1 font-body text-sm transition-all ${
                     isActive
                       ? 'text-neon-primary bg-neon-primary/10 font-semibold'
-                      : 'text-text-secondary hover:text-white hover:bg-white/5'
+                      : 'text-text-secondary hover:text-text-primary hover:bg-gray-100'
                   }`
                 }
               >

@@ -1,113 +1,120 @@
-import { useRef, useEffect, lazy, Suspense } from 'react'
-import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import { ArrowRight, Star, Clock, MapPin } from 'lucide-react'
-import { initHeroTimeline } from '../../animations/heroTimeline'
+import { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { ArrowRight, Star } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import Button from '../ui/Button'
-
-// Lazy-load the heavy 3D canvas
-const PizzaCanvas = lazy(() => import('./PizzaCanvas'))
+import heroPizzaImage from '../../assets/hero-pizza.png'
 
 export default function HeroSection() {
-  const heroRef = useRef(null)
+  const containerRef = useRef(null)
+  const navigate = useNavigate()
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"]
+  })
 
-  useEffect(() => {
-    const ctx = initHeroTimeline(heroRef.current)
-    return () => ctx?.revert()
-  }, [])
-
-  const stats = [
-    { icon: Star, value: '4.9★', label: 'Rating' },
-    { icon: Clock, value: '25 min', label: 'Avg Delivery' },
-    { icon: MapPin, value: '12+ Zones', label: 'Karachi' },
-  ]
+  const y1 = useTransform(scrollYProgress, [0, 1], [0, 100])
+  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0])
 
   return (
-    <section
-      ref={heroRef}
-      className="relative min-h-screen flex items-center overflow-hidden"
-      id="hero"
+    <section 
+      ref={containerRef}
+      className="relative min-h-screen flex items-center pt-24 pb-12 overflow-hidden bg-bg-base"
     >
-      {/* Background glow orbs */}
-      <div className="glow-orb glow-orb-primary w-[600px] h-[600px] top-[-100px] right-[-100px] opacity-60" />
-      <div className="glow-orb glow-orb-secondary w-[400px] h-[400px] bottom-[-50px] left-[-80px] opacity-40" />
+      {/* Decorative background elements */}
+      <div className="absolute top-20 -left-20 w-96 h-96 bg-brand-primary/5 rounded-full blur-[100px]" />
+      <div className="absolute bottom-10 right-0 w-[500px] h-[500px] bg-brand-secondary/5 rounded-full blur-[120px]" />
 
-      {/* 3D Canvas (right half) */}
-      <Suspense fallback={null}>
-        <PizzaCanvas />
-      </Suspense>
+      <div className="max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center z-10">
+        
+        {/* Left Column: Copy & CTA */}
+        <motion.div 
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="space-y-8"
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-gray-100 shadow-sm">
+            <Star className="w-4 h-4 text-brand-secondary fill-brand-secondary" />
+            <span className="text-sm font-semibold text-text-primary">Karachi's #1 Rated Fast Food</span>
+          </div>
 
-      {/* Content */}
-      <div className="hero-content relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-24 pb-16 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-screen">
-        <div className="space-y-6">
-          {/* Badge */}
-          <motion.div className="hero-badge inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-neon-primary/30">
-            <span className="w-2 h-2 rounded-full bg-neon-primary animate-pulse" />
-            <span className="text-neon-primary text-xs font-display font-semibold tracking-wider uppercase">
-              Now Delivering in Karachi
-            </span>
-          </motion.div>
-
-          {/* Title */}
-          <h1 className="hero-title font-display font-bold leading-[1.05] tracking-tight">
-            <span className="text-5xl sm:text-6xl xl:text-7xl text-white block">
-              Pizza That
-            </span>
-            <span className="text-5xl sm:text-6xl xl:text-7xl block neon-text">
-              Hits Different.
-            </span>
+          <h1 className="font-display text-5xl md:text-7xl font-bold leading-[1.1] text-text-primary tracking-tight">
+            Craving perfection? <br />
+            <span className="neon-text">We deliver.</span>
           </h1>
 
-          {/* Subtitle */}
-          <p className="hero-subtitle text-text-secondary text-lg sm:text-xl font-body leading-relaxed max-w-md">
-            Sitara's fire-kissed pizzas and legendary crispy fried chicken — crafted for Karachi's night owls and flavor hunters.
+          <p className="text-lg md:text-xl text-text-secondary font-body max-w-lg leading-relaxed">
+            Experience the finest wood-fired pizzas and legendary crispy fried chicken. Hot, fresh, and delivered straight to your door in minutes.
           </p>
 
-          {/* CTAs */}
-          <div className="hero-cta flex flex-wrap gap-3">
-            <Link to="/menu" id="hero-order-btn">
-              <Button
-                variant="neon"
-                size="lg"
-                className="group"
-              >
-                Order Now
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </Link>
-            <Link to="/menu?category=deals" id="hero-deals-btn">
-              <Button variant="outline" size="lg">
-                🔥 Today's Deals
-              </Button>
-            </Link>
+          <div className="flex flex-wrap items-center gap-4 pt-4">
+            <Button 
+              size="lg" 
+              onClick={() => navigate('/menu')}
+              className="group text-lg px-8 shadow-lg shadow-brand-primary/20"
+            >
+              Order Now
+              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+            </Button>
+            <Button 
+              variant="outline" 
+              size="lg"
+              onClick={() => {
+                document.getElementById('featured-deals')?.scrollIntoView({ behavior: 'smooth' })
+              }}
+              className="text-text-primary border-gray-200 hover:bg-gray-50"
+            >
+              View Deals
+            </Button>
           </div>
 
-          {/* Stats */}
-          <div className="hero-stats flex flex-wrap gap-4 pt-2">
-            {stats.map(({ icon: Icon, value, label }) => (
-              <div
-                key={label}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl glass border border-white/8"
-              >
-                <Icon className="w-4 h-4 text-neon-primary" />
-                <div>
-                  <div className="font-display font-bold text-sm text-white">{value}</div>
-                  <div className="text-text-muted text-xs font-body">{label}</div>
+          {/* Social Proof */}
+          <div className="pt-8 flex items-center gap-6 border-t border-gray-100">
+            <div className="flex -space-x-3">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="w-10 h-10 rounded-full border-2 border-white bg-gray-100 overflow-hidden">
+                  <img src={`https://i.pravatar.cc/100?img=${i+10}`} alt="Customer" className="w-full h-full object-cover" />
                 </div>
+              ))}
+            </div>
+            <div className="flex flex-col">
+              <div className="flex items-center gap-1">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <Star key={i} className="w-4 h-4 text-brand-secondary fill-brand-secondary" />
+                ))}
               </div>
-            ))}
+              <span className="text-sm font-medium text-text-secondary mt-1">10k+ Happy Customers</span>
+            </div>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Right column: 3D canvas fills this space on desktop */}
-        <div className="hidden lg:block" aria-hidden="true" />
-      </div>
-
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-float opacity-60">
-        <div className="w-5 h-8 rounded-full border border-white/20 flex items-start justify-center p-1">
-          <div className="w-1 h-2 rounded-full bg-neon-primary animate-bounce" />
-        </div>
+        {/* Right Column: Hero Image */}
+        <motion.div 
+          style={{ y: y1, opacity }}
+          initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
+          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
+          className="relative lg:h-[600px] flex items-center justify-center"
+        >
+          {/* Decorative backdrop for pizza */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-brand-primary/10 to-brand-secondary/10 rounded-full blur-3xl transform scale-75" />
+          
+          <motion.img 
+            src={heroPizzaImage}
+            alt="Delicious Pepperoni Pizza"
+            className="relative z-10 w-full max-w-[500px] object-contain drop-shadow-2xl"
+            animate={{ 
+              y: [-10, 10, -10],
+            }}
+            transition={{
+              duration: 6,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+        </motion.div>
       </div>
     </section>
   )

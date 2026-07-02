@@ -85,7 +85,7 @@ export default function MenuItemCard({ item, onCustomize }) {
           {/* Unavailable overlay */}
           {!item.is_available && (
             <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-              <span className="text-white font-display font-bold text-sm">Unavailable</span>
+              <span className="text-text-primary font-display font-bold text-sm">Unavailable</span>
             </div>
           )}
 
@@ -97,7 +97,7 @@ export default function MenuItemCard({ item, onCustomize }) {
       {/* Content */}
       <div className="p-4 flex flex-col flex-1">
         <Link to={`/menu/${item.id}`} id={`menu-item-title-${item.id}`}>
-          <h3 className="font-display font-semibold text-white text-sm leading-snug line-clamp-1 hover:text-neon-primary transition-colors mb-1">
+          <h3 className="font-display font-semibold text-text-primary text-sm leading-snug line-clamp-1 hover:text-neon-primary transition-colors mb-1">
             {item.name}
           </h3>
         </Link>
@@ -123,8 +123,8 @@ export default function MenuItemCard({ item, onCustomize }) {
             disabled={!item.is_available}
             className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all ${
               item.is_available
-                ? 'bg-neon-primary/15 border border-neon-primary/30 text-neon-primary hover:bg-neon-primary hover:text-white hover:shadow-glow-primary'
-                : 'bg-white/5 border border-white/10 text-text-muted cursor-not-allowed'
+                ? 'bg-neon-primary/15 border border-neon-primary/30 text-neon-primary hover:bg-neon-primary hover:text-text-primary hover:shadow-glow-primary'
+                : 'bg-gray-100 border border-gray-200 text-text-muted cursor-not-allowed'
             }`}
             aria-label={`Add ${item.name} to cart`}
           >
