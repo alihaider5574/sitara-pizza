@@ -33,7 +33,7 @@ function LoyaltyRing({ points = 0, maxPoints = 1000 }) {
           </defs>
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <Star className="w-4 h-4 text-neon-primary mb-0.5" />
+          <Star className="w-4 h-4 text-brand-primary mb-0.5" />
           <span className="font-display font-bold text-text-primary text-sm">{points}</span>
           <span className="text-text-muted text-[10px] font-body">pts</span>
         </div>
@@ -62,8 +62,8 @@ export default function Account() {
     delivered: 'text-green-400 bg-green-400/10',
     pending: 'text-yellow-400 bg-yellow-400/10',
     cancelled: 'text-red-400 bg-red-400/10',
-    preparing: 'text-neon-primary bg-neon-primary/10',
-    out_for_delivery: 'text-neon-cyan bg-neon-cyan/10',
+    preparing: 'text-brand-primary bg-brand-primary/10',
+    out_for_delivery: 'text-brand-accent bg-brand-accent/10',
   }
 
   return (
@@ -77,7 +77,7 @@ export default function Account() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
         {/* Profile header */}
         <div className="glass-card p-6 mb-6 flex items-center gap-6 flex-wrap">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-neon flex items-center justify-center text-text-primary font-display font-bold text-2xl shadow-glow-primary flex-shrink-0">
+          <div className="w-16 h-16 rounded-2xl bg-gradient-neon flex items-center justify-center text-text-primary font-display font-bold text-2xl shadow-md flex-shrink-0">
             {user?.email?.[0]?.toUpperCase() || 'U'}
           </div>
           <div className="flex-1">
@@ -100,7 +100,7 @@ export default function Account() {
 
         {/* Order history */}
         <h2 className="font-display font-bold text-text-primary text-lg mb-4 flex items-center gap-2">
-          <Package className="w-5 h-5 text-neon-primary" />
+          <Package className="w-5 h-5 text-brand-primary" />
           Order History
         </h2>
 
@@ -121,7 +121,7 @@ export default function Account() {
                 </p>
               </div>
               <div className="text-right">
-                <div className="font-display font-bold text-neon-primary">
+                <div className="font-display font-bold text-brand-primary">
                   PKR {order.total.toLocaleString()}
                 </div>
                 <Link

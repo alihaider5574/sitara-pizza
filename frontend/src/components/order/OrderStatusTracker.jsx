@@ -32,9 +32,9 @@ export default function OrderStatusTracker({ status = 'pending', orderId }) {
       {/* Order ID */}
       <div className="flex items-center justify-between mb-6">
         <h3 className="font-display font-bold text-text-primary">Live Order Status</h3>
-        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-neon-cyan/10 border border-neon-cyan/25">
-          <span className="w-2 h-2 rounded-full bg-neon-cyan animate-pulse" />
-          <span className="text-neon-cyan text-xs font-bold">Live</span>
+        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-brand-accent/10 border border-brand-accent/25">
+          <span className="w-2 h-2 rounded-full bg-brand-accent animate-pulse" />
+          <span className="text-brand-accent text-xs font-bold">Live</span>
         </div>
       </div>
 
@@ -55,9 +55,9 @@ export default function OrderStatusTracker({ status = 'pending', orderId }) {
                   transition={{ repeat: Infinity, duration: 2 }}
                   className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-all ${
                     isCompleted
-                      ? 'bg-neon-primary text-text-primary shadow-glow-primary'
+                      ? 'bg-brand-primary text-text-primary shadow-md'
                       : isActive
-                      ? 'bg-neon-primary/20 border-2 border-neon-primary text-neon-primary animate-pulse-glow'
+                      ? 'bg-brand-primary/20 border-2 border-brand-primary text-brand-primary animate-pulse-glow'
                       : 'bg-bg-elevated border border-gray-200 text-text-muted'
                   }`}
                 >
@@ -67,7 +67,7 @@ export default function OrderStatusTracker({ status = 'pending', orderId }) {
                 {/* Vertical connector */}
                 {index < STEPS.length - 1 && (
                   <div className={`w-0.5 flex-1 my-1 min-h-[24px] transition-all duration-500 ${
-                    isCompleted ? 'bg-neon-primary' : 'bg-white/8'
+                    isCompleted ? 'bg-brand-primary' : 'bg-white/8'
                   }`} />
                 )}
               </div>
@@ -75,7 +75,7 @@ export default function OrderStatusTracker({ status = 'pending', orderId }) {
               {/* Label */}
               <div className={`pb-5 ${index === STEPS.length - 1 ? 'pb-0' : ''}`}>
                 <div className={`font-display font-semibold text-sm ${
-                  isActive ? 'text-neon-primary' :
+                  isActive ? 'text-brand-primary' :
                   isCompleted ? 'text-text-primary' : 'text-text-muted'
                 }`}>
                   {step.label}

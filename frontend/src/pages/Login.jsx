@@ -58,7 +58,7 @@ export default function Login() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center gap-2 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-gradient-neon flex items-center justify-center shadow-glow-primary">
+            <div className="w-10 h-10 rounded-xl bg-gradient-neon flex items-center justify-center shadow-md">
               <Zap className="w-5 h-5 text-text-primary" />
             </div>
             <span className="font-display font-bold text-xl text-text-primary">Sitara</span>
@@ -99,7 +99,7 @@ export default function Login() {
                 type="email"
                 autoComplete="email"
                 placeholder="you@example.com"
-                className="w-full bg-bg-elevated border border-white/8 rounded-xl px-4 py-3 text-text-primary text-sm font-body focus:border-neon-primary/40 transition-colors"
+                className="w-full bg-bg-elevated border border-white/8 rounded-xl px-4 py-3 text-text-primary text-sm font-body focus:border-brand-primary/40 transition-colors"
               />
               {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email.message}</p>}
             </div>
@@ -113,7 +113,7 @@ export default function Login() {
                   type={showPassword ? 'text' : 'password'}
                   autoComplete="current-password"
                   placeholder="••••••••"
-                  className="w-full bg-bg-elevated border border-white/8 rounded-xl px-4 py-3 pr-10 text-text-primary text-sm font-body focus:border-neon-primary/40 transition-colors"
+                  className="w-full bg-bg-elevated border border-white/8 rounded-xl px-4 py-3 pr-10 text-text-primary text-sm font-body focus:border-brand-primary/40 transition-colors"
                 />
                 <button
                   type="button"
@@ -141,7 +141,7 @@ export default function Login() {
 
           <p className="text-center text-text-secondary font-body text-sm mt-5">
             Don't have an account?{' '}
-            <Link to="/signup" id="login-signup-link" className="text-neon-primary hover:text-text-primary transition-colors font-semibold">
+            <Link to="/signup" id="login-signup-link" className="text-brand-primary hover:text-text-primary transition-colors font-semibold">
               Sign Up
             </Link>
           </p>

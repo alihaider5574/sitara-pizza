@@ -7,7 +7,8 @@ import CategoryTabs from '../components/menu/CategoryTabs'
 import MenuItemCard from '../components/menu/MenuItemCard'
 import ItemCustomizeModal from '../components/menu/ItemCustomizeModal'
 import { MenuItemCardSkeleton } from '../components/ui/Skeleton'
-import { mockCategories, mockMenuItems } from '../data/mockMenu'
+import { useQuery } from '@tanstack/react-query'
+import apiClient from '../lib/apiClient'
 
 const ALL_CAT = { id: 'all', name: 'All', slug: 'all', sort_order: -1 }
 
@@ -18,22 +19,32 @@ export default function Menu() {
 
   const activeCategory = searchParams.get('category') || 'all'
 
-  const categories = [ALL_CAT, ...mockCategories]
+  // Fetch categories from Neon Postgres
+  const { data: serverCategories = [] } = useQuery({
+    queryKey: ['categories'],
+    queryFn: async () => {
+      const res = await apiClient.get('/api/categories')
+      return res.data
+    }
+  })
 
-  const filteredItems = useMemo(() => {
-    let items = mockMenuItems
-    if (activeCategory !== 'all') {
-      const cat = mockCategories.find((c) => c.slug === activeCategory)
-      if (cat) items = items.filter((i) => i.category_id === cat.id)
+  // Fetch menu items from Neon Postgres
+  const { data: menuItems = [], isLoading } = useQuery({
+    queryKey: ['menu', activeCategory, search],
+    queryFn: async () => {
+      const res = await apiClient.get('/api/menu', {
+        params: {
+          category: activeCategory === 'all' ? undefined : activeCategory,
+          search: search.trim() || undefined
+        }
+      })
+      return res.data
     }
-    if (search.trim()) {
-      const q = search.toLowerCase()
-      items = items.filter(
-        (i) => i.name.toLowerCase().includes(q) || i.description?.toLowerCase().includes(q)
-      )
-    }
-    return items
-  }, [activeCategory, search])
+  })
+
+  const categories = [ALL_CAT, ...serverCategories]
+
+  const filteredItems = menuItems
 
   return (
     <motion.div
@@ -74,7 +85,7 @@ export default function Menu() {
               placeholder="Search pizza, chicken..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-bg-surface border border-white/8 rounded-xl pl-9 pr-4 py-2.5 text-sm text-text-primary placeholder-text-muted font-body focus:border-neon-primary/40 transition-colors"
+              className="w-full bg-bg-surface border border-white/8 rounded-xl pl-9 pr-4 py-2.5 text-sm text-text-primary placeholder-text-muted font-body focus:border-brand-primary/40 transition-colors"
             />
           </div>
         </div>
@@ -86,38 +97,46 @@ export default function Menu() {
         </p>
 
         {/* Grid */}
-        <AnimatePresence mode="popLayout">
-          {filteredItems.length > 0 ? (
-            <motion.div
-              key={activeCategory + search}
-              variants={staggerContainer}
-              initial="initial"
-              animate="animate"
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
-            >
-              {filteredItems.map((item) => (
-                <motion.div key={item.id} variants={staggerItem}>
-                  <MenuItemCard item={item} onCustomize={setCustomizeItem} />
-                </motion.div>
-              ))}
-            </motion.div>
-          ) : (
-            <motion.div
-              key="empty"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-center py-20"
-            >
-              <div className="text-5xl mb-4">🔍</div>
-              <h3 className="font-display font-semibold text-text-primary text-lg mb-2">
-                No items found
-              </h3>
-              <p className="text-text-muted font-body text-sm">
-                Try a different search or category
-              </p>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {isLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 animate-pulse">
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+              <MenuItemCardSkeleton key={i} />
+            ))}
+          </div>
+        ) : (
+          <AnimatePresence mode="popLayout">
+            {filteredItems.length > 0 ? (
+              <motion.div
+                key={activeCategory + search}
+                variants={staggerContainer}
+                initial="initial"
+                animate="animate"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
+              >
+                {filteredItems.map((item) => (
+                  <motion.div key={item.id} variants={staggerItem}>
+                    <MenuItemCard item={item} onCustomize={setCustomizeItem} />
+                  </motion.div>
+                ))}
+              </motion.div>
+            ) : (
+              <motion.div
+                key="empty"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-center py-20"
+              >
+                <div className="text-5xl mb-4">🔍</div>
+                <h3 className="font-display font-semibold text-text-primary text-lg mb-2">
+                  No items found
+                </h3>
+                <p className="text-text-muted font-body text-sm">
+                  Try a different search or category
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        )}
       </div>
 
       {/* Item customize modal */}

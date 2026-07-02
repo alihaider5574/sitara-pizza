@@ -14,7 +14,7 @@ export default function CategoryTabs({ categories, active, onChange }) {
               role="tab"
               aria-selected={isActive}
               onClick={() => onChange(cat.slug)}
-              className={`relative flex-shrink-0 px-5 py-2.5 rounded-full text-sm font-display font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-primary/50 ${
+              className={`relative flex-shrink-0 px-5 py-2.5 rounded-full text-sm font-display font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/50 ${
                 isActive
                   ? 'text-text-primary'
                   : 'text-text-secondary hover:text-text-primary bg-transparent border border-white/8 hover:border-white/20'
@@ -24,7 +24,7 @@ export default function CategoryTabs({ categories, active, onChange }) {
               {isActive && (
                 <motion.span
                   layoutId="activeTab"
-                  className="absolute inset-0 rounded-full bg-gradient-neon shadow-glow-primary"
+                  className="absolute inset-0 rounded-full bg-gradient-neon shadow-md"
                   style={{ zIndex: -1 }}
                   transition={{ type: 'spring', damping: 25, stiffness: 300 }}
                 />

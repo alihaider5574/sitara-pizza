@@ -70,12 +70,12 @@ export default function ItemCustomizeModal({ item, isOpen, onClose }) {
                     onClick={() => setSelectedVariant(variant)}
                     className={`flex items-center justify-between p-3 rounded-xl border transition-all text-left ${
                       isSelected
-                        ? 'border-neon-primary bg-neon-primary/10 text-text-primary'
+                        ? 'border-brand-primary bg-brand-primary/10 text-text-primary'
                         : 'border-white/8 bg-white/3 text-text-secondary hover:border-white/20'
                     }`}
                   >
                     <span className="font-body text-sm">{variant.name}</span>
-                    <span className={`font-display font-semibold text-sm ${isSelected ? 'text-neon-primary' : ''}`}>
+                    <span className={`font-display font-semibold text-sm ${isSelected ? 'text-brand-primary' : ''}`}>
                       {variant.price_delta > 0 ? `+PKR ${variant.price_delta}` : 'Base'}
                     </span>
                   </button>
@@ -101,19 +101,19 @@ export default function ItemCustomizeModal({ item, isOpen, onClose }) {
                     onClick={() => toggleAddon(addon)}
                     className={`flex items-center justify-between p-3 rounded-xl border transition-all text-left ${
                       isChecked
-                        ? 'border-neon-secondary bg-neon-secondary/10 text-text-primary'
+                        ? 'border-brand-secondary bg-brand-secondary/10 text-text-primary'
                         : 'border-white/8 bg-white/3 text-text-secondary hover:border-white/20'
                     }`}
                   >
                     <div className="flex items-center gap-2">
                       <div className={`w-4 h-4 rounded-sm border transition-all flex items-center justify-center ${
-                        isChecked ? 'bg-neon-secondary border-neon-secondary' : 'border-white/25'
+                        isChecked ? 'bg-brand-secondary border-brand-secondary' : 'border-white/25'
                       }`}>
                         {isChecked && <X className="w-3 h-3 text-text-primary" style={{ transform: 'rotate(45deg)' }} />}
                       </div>
                       <span className="font-body text-sm">{addon.name}</span>
                     </div>
-                    <span className={`font-display font-semibold text-sm ${isChecked ? 'text-neon-secondary' : ''}`}>
+                    <span className={`font-display font-semibold text-sm ${isChecked ? 'text-brand-secondary' : ''}`}>
                       +PKR {addon.price}
                     </span>
                   </button>
@@ -138,7 +138,7 @@ export default function ItemCustomizeModal({ item, isOpen, onClose }) {
             <button
               id="qty-increase"
               onClick={() => setQuantity((q) => Math.min(20, q + 1))}
-              className="w-8 h-8 flex items-center justify-center text-neon-primary hover:text-text-primary transition-colors"
+              className="w-8 h-8 flex items-center justify-center text-brand-primary hover:text-text-primary transition-colors"
             >
               <Plus className="w-3.5 h-3.5" />
             </button>

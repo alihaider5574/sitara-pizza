@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
 
+import apiClient from '../lib/apiClient'
+
 /**
  * Subscribe to real-time order status updates for a given order ID.
- * Powered by Supabase Realtime postgres_changes.
+ * Powered by Supabase Realtime and falls back to polling for local database testing.
  *
  * @param {string|null} orderId - The order UUID to track
  * @returns {{ order: object|null, status: string|null, loading: boolean }}
@@ -18,36 +20,59 @@ export function useRealtimeOrder(orderId) {
       return
     }
 
-    // Initial fetch
-    supabase
-      .from('orders')
-      .select('*, order_items(*)')
-      .eq('id', orderId)
-      .single()
-      .then(({ data }) => {
-        setOrder(data)
+    // Initial fetch from our live FastAPI backend
+    apiClient.get(`/api/orders/${orderId}`)
+      .then((res) => {
+        setOrder(res.data)
+      })
+      .catch((err) => {
+        console.error("Failed to fetch order:", err)
+      })
+      .finally(() => {
         setLoading(false)
       })
 
-    // Subscribe to changes
-    const channel = supabase
-      .channel(`order-${orderId}`)
-      .on(
-        'postgres_changes',
-        {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'orders',
-          filter: `id=eq.${orderId}`,
-        },
-        (payload) => {
-          setOrder((prev) => ({ ...prev, ...payload.new }))
-        }
-      )
-      .subscribe()
+    // Try subscribing to changes if supabase is configured
+    let channel = null
+    const isMock = import.meta.env.VITE_SUPABASE_URL?.includes('your-project-ref')
+    if (!isMock) {
+      try {
+        channel = supabase
+          .channel(`order-${orderId}`)
+          .on(
+            'postgres_changes',
+            {
+              event: 'UPDATE',
+              schema: 'public',
+              table: 'orders',
+              filter: `id=eq.${orderId}`,
+            },
+            (payload) => {
+              setOrder((prev) => ({ ...prev, ...payload.new }))
+            }
+          )
+          .subscribe()
+      } catch (err) {
+        console.warn("Supabase Realtime not available:", err)
+      }
+    }
+
+    // Polling fallback so database order tracking works locally
+    const interval = setInterval(() => {
+      apiClient.get(`/api/orders/${orderId}`)
+        .then((res) => {
+          setOrder(res.data)
+        })
+        .catch(console.error)
+    }, 4000)
 
     return () => {
-      supabase.removeChannel(channel)
+      clearInterval(interval)
+      if (channel) {
+        try {
+          supabase.removeChannel(channel)
+        } catch (e) {}
+      }
     }
   }, [orderId])
 

@@ -41,7 +41,7 @@ export default function Navbar() {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 group" id="nav-logo">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-neon-primary to-neon-secondary flex items-center justify-center animate-pulse-glow">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-primary to-brand-secondary flex items-center justify-center animate-pulse-glow">
             <Zap className="w-4 h-4 text-text-primary" />
           </div>
           <span className="font-display font-bold text-lg text-text-primary group-hover:neon-text transition-all">
@@ -59,7 +59,7 @@ export default function Navbar() {
               className={({ isActive }) =>
                 `px-4 py-2 rounded-lg text-sm font-medium font-body transition-all ${
                   isActive
-                    ? 'text-neon-primary bg-neon-primary/10'
+                    ? 'text-brand-primary bg-brand-primary/10'
                     : 'text-text-secondary hover:text-text-primary hover:bg-gray-100'
                 }`
               }
@@ -86,7 +86,7 @@ export default function Navbar() {
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   exit={{ scale: 0 }}
-                  className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-neon-primary text-text-primary text-xs font-bold flex items-center justify-center animate-bounce-subtle"
+                  className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-brand-primary text-text-primary text-xs font-bold flex items-center justify-center animate-bounce-subtle"
                 >
                   {itemCount > 9 ? '9+' : itemCount}
                 </motion.span>
@@ -142,7 +142,7 @@ export default function Navbar() {
                 className={({ isActive }) =>
                   `flex items-center px-4 py-3 rounded-xl my-1 font-body text-sm transition-all ${
                     isActive
-                      ? 'text-neon-primary bg-neon-primary/10 font-semibold'
+                      ? 'text-brand-primary bg-brand-primary/10 font-semibold'
                       : 'text-text-secondary hover:text-text-primary hover:bg-gray-100'
                   }`
                 }

@@ -59,14 +59,14 @@ function CartItemRow({ item }) {
             <button
               id={`cart-qty-inc-${item._key}`}
               onClick={() => updateQuantity(item._key, item.quantity + 1)}
-              className="w-6 h-6 flex items-center justify-center text-neon-primary hover:text-text-primary transition-colors"
+              className="w-6 h-6 flex items-center justify-center text-brand-primary hover:text-text-primary transition-colors"
             >
               <Plus className="w-3 h-3" />
             </button>
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="font-display font-bold text-neon-primary text-xs">
+            <span className="font-display font-bold text-brand-primary text-xs">
               PKR {(unitPrice * item.quantity).toLocaleString()}
             </span>
             <button
@@ -121,7 +121,7 @@ export default function CartDrawer() {
             {/* Header */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-white/5">
               <div className="flex items-center gap-2">
-                <ShoppingBag className="w-5 h-5 text-neon-primary" />
+                <ShoppingBag className="w-5 h-5 text-brand-primary" />
                 <h2 className="font-display font-bold text-text-primary">
                   Your Cart
                   {items.length > 0 && (
@@ -190,7 +190,7 @@ export default function CartDrawer() {
                   <div className="neon-divider" />
                   <div className="flex justify-between font-display font-bold">
                     <span className="text-text-primary">Total</span>
-                    <span className="text-neon-primary text-lg">PKR {total.toLocaleString()}</span>
+                    <span className="text-brand-primary text-lg">PKR {total.toLocaleString()}</span>
                   </div>
                 </div>
 

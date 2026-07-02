@@ -10,6 +10,9 @@ import useCartStore from '../store/cartStore'
 import Button from '../components/ui/Button'
 import { useAuth } from '../hooks/useAuth'
 
+import { toast } from 'react-hot-toast'
+import apiClient from '../lib/apiClient'
+
 const STEPS = ['Address', 'Payment', 'Review']
 const DELIVERY_FEE = 99
 
@@ -34,8 +37,8 @@ function StepIndicator({ step }) {
         return (
           <div key={label} className="flex items-center gap-2">
             <div className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-display font-semibold transition-all ${
-              isActive ? 'bg-neon-primary text-text-primary shadow-glow-primary' :
-              isCompleted ? 'bg-neon-primary/20 text-neon-primary' :
+              isActive ? 'bg-brand-primary text-text-primary shadow-md' :
+              isCompleted ? 'bg-brand-primary/20 text-brand-primary' :
               'bg-bg-elevated text-text-muted'
             }`}>
               <span>{isCompleted ? '✓' : index + 1}</span>
@@ -79,13 +82,33 @@ export default function Checkout() {
   }
 
   const handlePlaceOrder = async () => {
-    if (!user) { navigate('/login'); return }
     setPlacing(true)
-    // Simulate order placement (wire to apiClient.post('/api/orders', ...) when backend is live)
-    await new Promise((r) => setTimeout(r, 1500))
-    const mockOrderId = `ord-${Math.random().toString(36).slice(2, 10)}`
-    clearCart()
-    navigate(`/track/${mockOrderId}`)
+    
+    const orderData = {
+      items: items.map(item => ({
+        menu_item_id: item.id,
+        variant_id: item.variant?.id || null,
+        quantity: item.quantity,
+        addon_ids: (item.addons || []).map(a => a.id),
+        notes: item.notes || null,
+      })),
+      address_id: "00000000-0000-0000-0000-000000000000", // fallback default address
+      promo_code: promoCode || null,
+      payment_method: paymentMethod,
+      notes: null,
+    }
+
+    try {
+      const res = await apiClient.post('/api/orders', orderData)
+      clearCart()
+      toast.success("Order placed successfully!")
+      navigate(`/track/${res.data.order_id}`)
+    } catch (err) {
+      console.error(err)
+      toast.error(err.response?.data?.detail || "Failed to place order")
+    } finally {
+      setPlacing(false)
+    }
   }
 
   if (items.length === 0) {
@@ -130,7 +153,7 @@ export default function Checkout() {
                 >
                   <div className="glass-card p-6">
                     <div className="flex items-center gap-2 mb-5">
-                      <MapPin className="w-5 h-5 text-neon-primary" />
+                      <MapPin className="w-5 h-5 text-brand-primary" />
                       <h2 className="font-display font-semibold text-text-primary">Delivery Address</h2>
                     </div>
 
@@ -143,7 +166,7 @@ export default function Checkout() {
                           {...register('label')}
                           id="checkout-address-label"
                           placeholder="Home, Work, etc."
-                          className="w-full bg-bg-elevated border border-white/8 rounded-xl px-4 py-3 text-text-primary text-sm font-body focus:border-neon-primary/40 transition-colors"
+                          className="w-full bg-bg-elevated border border-white/8 rounded-xl px-4 py-3 text-text-primary text-sm font-body focus:border-brand-primary/40 transition-colors"
                         />
                       </div>
                       <div>
@@ -155,7 +178,7 @@ export default function Checkout() {
                           id="checkout-address-line"
                           rows={3}
                           placeholder="Street, Building, Area..."
-                          className="w-full bg-bg-elevated border border-white/8 rounded-xl px-4 py-3 text-text-primary text-sm font-body focus:border-neon-primary/40 transition-colors resize-none"
+                          className="w-full bg-bg-elevated border border-white/8 rounded-xl px-4 py-3 text-text-primary text-sm font-body focus:border-brand-primary/40 transition-colors resize-none"
                         />
                         {errors.address_line && (
                           <p className="text-red-400 text-xs mt-1">{errors.address_line.message}</p>
@@ -169,7 +192,7 @@ export default function Checkout() {
                           {...register('city')}
                           id="checkout-city"
                           placeholder="Karachi"
-                          className="w-full bg-bg-elevated border border-white/8 rounded-xl px-4 py-3 text-text-primary text-sm font-body focus:border-neon-primary/40 transition-colors"
+                          className="w-full bg-bg-elevated border border-white/8 rounded-xl px-4 py-3 text-text-primary text-sm font-body focus:border-brand-primary/40 transition-colors"
                         />
                         {errors.city && (
                           <p className="text-red-400 text-xs mt-1">{errors.city.message}</p>
@@ -198,7 +221,7 @@ export default function Checkout() {
                 >
                   <div className="glass-card p-6">
                     <div className="flex items-center gap-2 mb-5">
-                      <CreditCard className="w-5 h-5 text-neon-primary" />
+                      <CreditCard className="w-5 h-5 text-brand-primary" />
                       <h2 className="font-display font-semibold text-text-primary">Payment Method</h2>
                     </div>
 
@@ -210,13 +233,13 @@ export default function Checkout() {
                           onClick={() => setPaymentMethod(method.id)}
                           className={`w-full flex items-center gap-4 p-4 rounded-xl border transition-all text-left ${
                             paymentMethod === method.id
-                              ? 'border-neon-primary bg-neon-primary/10'
+                              ? 'border-brand-primary bg-brand-primary/10'
                               : 'border-white/8 hover:border-white/20'
                           }`}
                         >
                           <span className="text-2xl">{method.icon}</span>
                           <div>
-                            <div className={`font-display font-semibold text-sm ${paymentMethod === method.id ? 'text-neon-primary' : 'text-text-primary'}`}>
+                            <div className={`font-display font-semibold text-sm ${paymentMethod === method.id ? 'text-brand-primary' : 'text-text-primary'}`}>
                               {method.label}
                             </div>
                             <div className="text-text-muted text-xs font-body">{method.description}</div>
@@ -237,7 +260,7 @@ export default function Checkout() {
                           placeholder="SITARA20"
                           value={promoCode}
                           onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-                          className="flex-1 bg-bg-elevated border border-white/8 rounded-xl px-4 py-3 text-text-primary text-sm font-body focus:border-neon-primary/40 transition-colors uppercase"
+                          className="flex-1 bg-bg-elevated border border-white/8 rounded-xl px-4 py-3 text-text-primary text-sm font-body focus:border-brand-primary/40 transition-colors uppercase"
                         />
                         <Button variant="outline" id="checkout-apply-promo">Apply</Button>
                       </div>
@@ -274,7 +297,7 @@ export default function Checkout() {
                 >
                   <div className="glass-card p-6">
                     <div className="flex items-center gap-2 mb-5">
-                      <CheckCircle className="w-5 h-5 text-neon-primary" />
+                      <CheckCircle className="w-5 h-5 text-brand-primary" />
                       <h2 className="font-display font-semibold text-text-primary">Review & Place Order</h2>
                     </div>
 
@@ -348,7 +371,7 @@ export default function Checkout() {
               <div className="neon-divider my-3" />
               <div className="flex justify-between font-display font-bold">
                 <span className="text-text-primary">Total</span>
-                <span className="text-neon-primary text-lg">PKR {total.toLocaleString()}</span>
+                <span className="text-brand-primary text-lg">PKR {total.toLocaleString()}</span>
               </div>
             </div>
           </div>

@@ -23,7 +23,7 @@ const Button = forwardRef(({
   id,
   ...props
 }, ref) => {
-  const base = 'inline-flex items-center justify-center gap-2 font-display font-semibold rounded-xl transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-primary/50 disabled:opacity-50 disabled:cursor-not-allowed select-none'
+  const base = 'inline-flex items-center justify-center gap-2 font-display font-semibold rounded-xl transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/50 disabled:opacity-50 disabled:cursor-not-allowed select-none'
 
   const sizes = {
     sm: 'px-3 py-1.5 text-xs',
@@ -34,7 +34,7 @@ const Button = forwardRef(({
   const variants = {
     neon: 'btn-neon text-text-primary shadow-card',
     ghost: 'bg-transparent text-text-secondary hover:text-text-primary hover:bg-white/6',
-    outline: 'bg-transparent text-neon-primary border border-neon-primary/40 hover:bg-neon-primary/10 hover:border-neon-primary',
+    outline: 'bg-transparent text-brand-primary border border-brand-primary/40 hover:bg-brand-primary/10 hover:border-brand-primary',
     danger: 'bg-red-500/10 text-red-400 border border-red-500/30 hover:bg-red-500/20',
   }
 

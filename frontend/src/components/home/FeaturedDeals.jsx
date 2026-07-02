@@ -44,14 +44,14 @@ function DealCard({ item, index }) {
             <span className="text-text-muted text-xs line-through font-body">
               PKR {item.base_price.toLocaleString()}
             </span>
-            <span className="text-neon-primary font-display font-bold text-base">
+            <span className="text-brand-primary font-display font-bold text-base">
               PKR {Math.round(item.base_price * (1 - discount / 100)).toLocaleString()}
             </span>
           </div>
           <Link
             to={`/menu`}
             id={`deal-card-${item.id}`}
-            className="text-xs font-display font-semibold text-neon-primary hover:text-text-primary transition-colors flex items-center gap-1"
+            className="text-xs font-display font-semibold text-brand-primary hover:text-text-primary transition-colors flex items-center gap-1"
           >
             Order <ArrowRight className="w-3 h-3" />
           </Link>
@@ -75,8 +75,8 @@ export default function FeaturedDeals() {
         {/* Header */}
         <div className="flex items-end justify-between mb-10">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-neon-primary/10 border border-neon-primary/25 mb-3">
-              <span className="text-neon-primary text-xs font-display font-bold uppercase tracking-wider">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-primary/10 border border-brand-primary/25 mb-3">
+              <span className="text-brand-primary text-xs font-display font-bold uppercase tracking-wider">
                 🔥 Hot Deals
               </span>
             </div>
@@ -90,7 +90,7 @@ export default function FeaturedDeals() {
           <Link
             to="/menu?category=deals"
             id="view-all-deals-btn"
-            className="hidden sm:flex items-center gap-2 text-neon-primary hover:text-text-primary font-display font-semibold text-sm transition-colors"
+            className="hidden sm:flex items-center gap-2 text-brand-primary hover:text-text-primary font-display font-semibold text-sm transition-colors"
           >
             View All <ArrowRight className="w-4 h-4" />
           </Link>
@@ -108,7 +108,7 @@ export default function FeaturedDeals() {
           <Link
             to="/menu?category=deals"
             id="mobile-view-all-deals-btn"
-            className="flex items-center gap-2 text-neon-primary font-display font-semibold text-sm"
+            className="flex items-center gap-2 text-brand-primary font-display font-semibold text-sm"
           >
             View All Deals <ArrowRight className="w-4 h-4" />
           </Link>

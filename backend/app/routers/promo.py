@@ -1,5 +1,6 @@
-from fastapi import APIRouter, HTTPException
-from app.db import get_supabase
+from fastapi import APIRouter, HTTPException, Depends
+import asyncpg
+from app.db import get_pool
 from app.models.promo import ValidatePromoRequest, ValidatePromoResponse
 from datetime import datetime, timezone
 
@@ -7,28 +8,26 @@ router = APIRouter(prefix="/api/promo", tags=["promo"])
 
 
 @router.post("/validate", response_model=ValidatePromoResponse)
-async def validate_promo(request: ValidatePromoRequest):
+async def validate_promo(
+    request: ValidatePromoRequest,
+    pool: asyncpg.Pool = Depends(get_pool),
+):
     """Validate a promo code against the given subtotal."""
-    db = get_supabase()
-    result = (
-        db.table("promo_codes")
-        .select("*")
-        .eq("code", request.code.upper())
-        .eq("active", True)
-        .single()
-        .execute()
+    promo = await pool.fetchrow(
+        "SELECT * FROM promo_codes WHERE code = $1 AND active = TRUE",
+        request.code.upper()
     )
 
-    if not result.data:
+    if not promo:
         return ValidatePromoResponse(valid=False, discount=0.0, message="Promo code not found or inactive")
-
-    promo = result.data
 
     # Check expiry
     expires_at = promo.get("expires_at")
     if expires_at:
-        exp_dt = datetime.fromisoformat(expires_at.replace("Z", "+00:00"))
-        if exp_dt < datetime.now(timezone.utc):
+        # expires_at is already a datetime object returned by asyncpg from TIMESTAMPTZ
+        if expires_at.tzinfo is None:
+            expires_at = expires_at.replace(tzinfo=timezone.utc)
+        if expires_at < datetime.now(timezone.utc):
             return ValidatePromoResponse(valid=False, discount=0.0, message="Promo code has expired")
 
     # Check minimum order

@@ -71,7 +71,7 @@ export default function OrderTracking() {
                   <span className="text-text-primary">PKR {Number(order.delivery_fee).toLocaleString()}</span>
                 </div>
                 {order.discount > 0 && (
-                  <div className="flex justify-between text-neon-cyan">
+                  <div className="flex justify-between text-brand-accent">
                     <span>Promo Discount</span>
                     <span>- PKR {Number(order.discount).toLocaleString()}</span>
                   </div>
@@ -79,7 +79,7 @@ export default function OrderTracking() {
                 <div className="neon-divider my-2" />
                 <div className="flex justify-between font-display font-bold">
                   <span className="text-text-primary">Total</span>
-                  <span className="text-neon-primary text-base">PKR {Number(order.total).toLocaleString()}</span>
+                  <span className="text-brand-primary text-base">PKR {Number(order.total).toLocaleString()}</span>
                 </div>
               </div>
             </div>

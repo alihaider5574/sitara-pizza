@@ -15,7 +15,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="md:col-span-2">
             <Link to="/" className="flex items-center gap-2 mb-4">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-neon-primary to-neon-secondary flex items-center justify-center shadow-glow-primary">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-primary to-brand-secondary flex items-center justify-center shadow-md">
                 <Zap className="w-5 h-5 text-text-primary" />
               </div>
               <div>
@@ -37,7 +37,7 @@ export default function Footer() {
                   key={id}
                   id={id}
                   href={href}
-                  className="w-9 h-9 rounded-lg glass flex items-center justify-center text-text-secondary hover:text-neon-primary hover:border-neon-primary/30 transition-all"
+                  className="w-9 h-9 rounded-lg glass flex items-center justify-center text-text-secondary hover:text-brand-primary hover:border-brand-primary/30 transition-all"
                 >
                   <Icon className="w-4 h-4" />
                 </a>
@@ -61,7 +61,7 @@ export default function Footer() {
                 <li key={to}>
                   <Link
                     to={to}
-                    className="text-text-secondary hover:text-neon-primary text-sm font-body transition-colors"
+                    className="text-text-secondary hover:text-brand-primary text-sm font-body transition-colors"
                   >
                     {label}
                   </Link>
@@ -77,19 +77,19 @@ export default function Footer() {
             </h3>
             <ul className="space-y-3">
               <li className="flex items-start gap-3 text-text-secondary text-sm font-body">
-                <Phone className="w-4 h-4 mt-0.5 text-neon-primary flex-shrink-0" />
+                <Phone className="w-4 h-4 mt-0.5 text-brand-primary flex-shrink-0" />
                 <a href="tel:+92300000000" className="hover:text-text-primary transition-colors">
                   +92 300 000 0000
                 </a>
               </li>
               <li className="flex items-start gap-3 text-text-secondary text-sm font-body">
-                <Mail className="w-4 h-4 mt-0.5 text-neon-primary flex-shrink-0" />
+                <Mail className="w-4 h-4 mt-0.5 text-brand-primary flex-shrink-0" />
                 <a href="mailto:hello@sitarapizza.com" className="hover:text-text-primary transition-colors">
                   hello@sitarapizza.com
                 </a>
               </li>
               <li className="flex items-start gap-3 text-text-secondary text-sm font-body">
-                <MapPin className="w-4 h-4 mt-0.5 text-neon-primary flex-shrink-0" />
+                <MapPin className="w-4 h-4 mt-0.5 text-brand-primary flex-shrink-0" />
                 <span>Karachi, Pakistan</span>
               </li>
             </ul>

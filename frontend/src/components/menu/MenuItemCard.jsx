@@ -10,12 +10,12 @@ const TAG_LABELS = {
 }
 
 const CATEGORY_EMOJI = {
-  'cat-1': '🍕',
-  'cat-2': '🍗',
-  'cat-3': '🎁',
-  'cat-4': '🍟',
-  'cat-5': '🥤',
-  'cat-6': '🔥',
+  'pizza': '🍕',
+  'fried-chicken': '🍗',
+  'combos': '🎁',
+  'sides': '🍟',
+  'drinks': '🥤',
+  'deals': '🔥',
 }
 
 export default function MenuItemCard({ item, onCustomize }) {
@@ -59,7 +59,7 @@ export default function MenuItemCard({ item, onCustomize }) {
             />
           ) : (
             <span className="text-6xl group-hover:scale-110 transition-transform duration-300">
-              {CATEGORY_EMOJI[item.category_id] || '🍽️'}
+              {CATEGORY_EMOJI[item.category?.slug] || '🍽️'}
             </span>
           )}
 
@@ -97,7 +97,7 @@ export default function MenuItemCard({ item, onCustomize }) {
       {/* Content */}
       <div className="p-4 flex flex-col flex-1">
         <Link to={`/menu/${item.id}`} id={`menu-item-title-${item.id}`}>
-          <h3 className="font-display font-semibold text-text-primary text-sm leading-snug line-clamp-1 hover:text-neon-primary transition-colors mb-1">
+          <h3 className="font-display font-semibold text-text-primary text-sm leading-snug line-clamp-1 hover:text-brand-primary transition-colors mb-1">
             {item.name}
           </h3>
         </Link>
@@ -108,7 +108,7 @@ export default function MenuItemCard({ item, onCustomize }) {
         {/* Price row */}
         <div className="flex items-center justify-between mt-auto">
           <div>
-            <div className="text-neon-primary font-display font-bold text-base">
+            <div className="text-brand-primary font-display font-bold text-base">
               PKR {item.base_price.toLocaleString()}
             </div>
             {item.variants?.length > 0 && (
@@ -123,7 +123,7 @@ export default function MenuItemCard({ item, onCustomize }) {
             disabled={!item.is_available}
             className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all ${
               item.is_available
-                ? 'bg-neon-primary/15 border border-neon-primary/30 text-neon-primary hover:bg-neon-primary hover:text-text-primary hover:shadow-glow-primary'
+                ? 'bg-brand-primary/15 border border-brand-primary/30 text-brand-primary hover:bg-brand-primary hover:text-text-primary hover:shadow-md'
                 : 'bg-gray-100 border border-gray-200 text-text-muted cursor-not-allowed'
             }`}
             aria-label={`Add ${item.name} to cart`}

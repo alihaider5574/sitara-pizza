@@ -16,8 +16,8 @@ export default function GlowCard({
   ...props
 }) {
   const glowClasses = {
-    primary: 'hover:shadow-card-hover hover:border-neon-primary/25',
-    secondary: 'hover:shadow-glow-secondary hover:border-neon-secondary/25',
+    primary: 'hover:shadow-card-hover hover:border-brand-primary/25',
+    secondary: 'hover:shadow-sm hover:border-brand-secondary/25',
     none: '',
   }
 

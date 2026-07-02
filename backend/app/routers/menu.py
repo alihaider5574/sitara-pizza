@@ -15,7 +15,7 @@ async def list_categories(pool: asyncpg.Pool = Depends(get_pool)):
     return [dict(r) for r in rows]
 
 
-@router.get("/menu", response_model=list[MenuItem])
+@router.get("/menu", response_model=list[MenuItemDetail])
 async def list_menu_items(
     category: str | None = Query(None, description="Filter by category slug"),
     search: str | None = Query(None, description="Search by item name"),
@@ -51,7 +51,31 @@ async def list_menu_items(
         ORDER BY m.created_at ASC
     """
     rows = await pool.fetch(query, *params)
-    return [dict(r) for r in rows]
+    
+    items = []
+    for r in rows:
+        item = dict(r)
+        item_id = item["id"]
+        
+        variants = await pool.fetch(
+            "SELECT id, menu_item_id, name, price_delta FROM item_variants WHERE menu_item_id = $1 ORDER BY price_delta ASC",
+            item_id
+        )
+        addons = await pool.fetch(
+            "SELECT id, menu_item_id, name, price FROM addons WHERE menu_item_id = $1 ORDER BY price ASC",
+            item_id
+        )
+        cat = await pool.fetchrow(
+            "SELECT id, name, slug, sort_order FROM categories WHERE id = $1",
+            item["category_id"]
+        )
+        
+        item["variants"] = [dict(v) for v in variants]
+        item["addons"] = [dict(a) for a in addons]
+        item["category"] = dict(cat) if cat else None
+        items.append(item)
+        
+    return items
 
 
 @router.get("/menu/{item_id}", response_model=MenuItemDetail)
