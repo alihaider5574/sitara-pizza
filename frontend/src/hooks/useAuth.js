@@ -8,20 +8,31 @@ export function useAuth() {
 
   useEffect(() => {
     // Get initial session
+    const isMock = import.meta.env.VITE_SUPABASE_URL?.includes('your-project-ref');
+    
+    if (isMock) {
+      setLoading(false);
+      return;
+    }
+
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
       setUser(session?.user ?? null)
       setLoading(false)
-    })
-
-    // Subscribe to auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session)
-      setUser(session?.user ?? null)
+    }).catch(err => {
+      console.warn("Supabase auth not configured properly:", err.message)
       setLoading(false)
     })
 
-    return () => subscription.unsubscribe()
+    // Subscribe to auth changes
+    try {
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+        setSession(session)
+        setUser(session?.user ?? null)
+        setLoading(false)
+      })
+      return () => subscription.unsubscribe()
+    } catch (e) {}
   }, [])
 
   const signIn = async ({ email, password }) => {

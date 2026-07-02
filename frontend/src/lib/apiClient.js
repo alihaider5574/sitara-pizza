@@ -8,11 +8,17 @@ const apiClient = axios.create({
   },
 })
 
-// Attach Supabase JWT to every request automatically
+// Attach Supabase JWT to every request automatically if configured
 apiClient.interceptors.request.use(async (config) => {
-  const { data: { session } } = await supabase.auth.getSession()
-  if (session?.access_token) {
-    config.headers.Authorization = `Bearer ${session.access_token}`
+  try {
+    if (import.meta.env.VITE_SUPABASE_URL && !import.meta.env.VITE_SUPABASE_URL.includes('your-project-ref')) {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session?.access_token) {
+        config.headers.Authorization = `Bearer ${session.access_token}`
+      }
+    }
+  } catch (err) {
+    console.warn("Supabase auth skipped:", err.message)
   }
   return config
 })

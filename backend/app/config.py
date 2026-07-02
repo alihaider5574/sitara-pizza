@@ -16,7 +16,7 @@ class Settings(BaseSettings):
 
     # ─── App ──────────────────────────────────────────────────────────────────
     app_env: str = "development"
-    cors_origins: str = "http://localhost:5173"
+    cors_origins: str = "*"
 
     # ─── JazzCash ─────────────────────────────────────────────────────────────
     jazzcash_merchant_id: str = ""
