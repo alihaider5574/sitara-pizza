@@ -6,6 +6,7 @@ import { useAuth } from './hooks/useAuth'
 // Pages
 import Home from './pages/Home'
 import Menu from './pages/Menu'
+import ProductDetail from './pages/ProductDetail'
 import Checkout from './pages/Checkout'
 import OrderTracking from './pages/OrderTracking'
 import Login from './pages/Login'
@@ -46,6 +47,7 @@ export default function AppRouter() {
         {/* Public */}
         <Route path="/" element={<Home />} />
         <Route path="/menu" element={<Menu />} />
+        <Route path="/menu/:itemId" element={<ProductDetail />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
