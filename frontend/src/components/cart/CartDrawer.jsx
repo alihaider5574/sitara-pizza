@@ -20,7 +20,7 @@ function CartItemRow({ item }) {
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 20, height: 0 }}
-      className="flex gap-3 py-3 border-b border-white/5 last:border-none"
+      className="flex gap-3 py-3 border-b border-gray-100 last:border-none"
     >
       {/* Image */}
       <div className="w-14 h-14 rounded-xl bg-bg-elevated flex items-center justify-center flex-shrink-0 text-2xl">
@@ -116,10 +116,10 @@ export default function CartDrawer() {
             animate="animate"
             exit="exit"
             className="fixed right-0 top-0 bottom-0 w-full max-w-sm z-[110] flex flex-col"
-            style={{ background: '#12121C', borderLeft: '1px solid rgba(255,255,255,0.08)' }}
+            style={{ background: '#FFFFFF', borderLeft: '1px solid rgba(0,0,0,0.08)' }}
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-5 py-4 border-b border-white/5">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
               <div className="flex items-center gap-2">
                 <ShoppingBag className="w-5 h-5 text-brand-primary" />
                 <h2 className="font-display font-bold text-text-primary">
@@ -177,7 +177,7 @@ export default function CartDrawer() {
 
             {/* Footer / Summary */}
             {items.length > 0 && (
-              <div className="px-5 py-4 border-t border-white/5 space-y-3">
+              <div className="px-5 py-4 border-t border-gray-100 space-y-3">
                 <div className="space-y-1.5">
                   <div className="flex justify-between text-sm font-body">
                     <span className="text-text-secondary">Subtotal</span>

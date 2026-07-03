@@ -86,6 +86,7 @@ async def list_all_orders(
     pool: asyncpg.Pool = Depends(get_pool),
 ):
     """Return all orders, optionally filtered by status."""
+    import json
     query = """
         SELECT o.*, json_agg(oi.*) AS order_items,
                json_build_object('full_name', p.full_name, 'phone', p.phone) AS profiles
@@ -104,7 +105,22 @@ async def list_all_orders(
     result = []
     for r in rows:
         d = dict(r)
-        d["profiles"] = d["profiles"] if d["profiles"].get("full_name") else None
+        
+        # Parse profiles JSON if returned as a string
+        if isinstance(d["profiles"], str):
+            try:
+                d["profiles"] = json.loads(d["profiles"])
+            except Exception:
+                d["profiles"] = None
+        d["profiles"] = d["profiles"] if (d["profiles"] and d["profiles"].get("full_name")) else None
+
+        # Parse order_items JSON if returned as a string
+        if isinstance(d["order_items"], str):
+            try:
+                d["order_items"] = json.loads(d["order_items"])
+            except Exception:
+                d["order_items"] = []
+                
         result.append(d)
     return result
 

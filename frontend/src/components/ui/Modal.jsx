@@ -71,7 +71,7 @@ export default function Modal({ isOpen, onClose, title, size = 'md', children, i
           >
             {/* Header */}
             {title && (
-              <div className="flex items-center justify-between p-5 border-b border-white/5">
+              <div className="flex items-center justify-between p-5 border-b border-gray-100">
                 <h2 id={`${id}-title`} className="font-display font-bold text-lg text-text-primary">
                   {title}
                 </h2>

@@ -13,6 +13,7 @@ import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Account from './pages/Account'
 import AdminDashboard from './pages/admin/Dashboard'
+import AdminLogin from './pages/admin/Login'
 
 function NotFound() {
   return (
@@ -32,9 +33,10 @@ function NotFound() {
 function ProtectedRoute({ children, adminOnly = false }) {
   const { user, loading } = useAuth()
   if (loading) return null
-  if (!user) return <Navigate to="/login" replace />
-  // Note: admin role check happens server-side via JWT dep.
-  // Add client-side check here using user metadata if needed.
+  if (!user) return <Navigate to={adminOnly ? "/admin/login" : "/login"} replace />
+  if (adminOnly && user.email !== 'admin@sitara.com') {
+    return <Navigate to="/admin/login" replace />
+  }
   return children
 }
 
@@ -66,6 +68,7 @@ export default function AppRouter() {
         } />
 
         {/* Admin */}
+        <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/*" element={
           <ProtectedRoute adminOnly><AdminDashboard /></ProtectedRoute>
         } />

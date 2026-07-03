@@ -30,11 +30,15 @@ export default function Navbar() {
     { to: '/track', label: 'Track Order' },
   ]
 
+  if (user?.email === 'admin@sitara.com') {
+    navLinks.push({ to: '/admin', label: 'Admin Panel' })
+  }
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'glass border-b border-white/5 shadow-[0_4px_32px_rgba(0,0,0,0.5)]'
+          ? 'glass border-b border-gray-200 shadow-sm'
           : 'bg-transparent'
       }`}
     >
@@ -133,7 +137,7 @@ export default function Navbar() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25 }}
-            className="md:hidden glass border-t border-white/5 px-4 pb-4"
+            className="md:hidden glass border-t border-gray-200 px-4 pb-4"
           >
             {navLinks.map((link) => (
               <NavLink
