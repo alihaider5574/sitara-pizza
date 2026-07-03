@@ -1,24 +1,49 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabaseClient'
 
+// ─── Pre-seeded accounts for offline/mock mode ──────────────────────────────
+const SEED_ACCOUNTS = [
+  {
+    id: 'admin-00000000-0000-0000-0000-000000000001',
+    email: 'admin@sitara.com',
+    password: 'admin123',
+    fullName: 'Admin User',
+    phone: '0300-0000000',
+  },
+]
+
+function ensureSeedAccounts() {
+  const users = JSON.parse(localStorage.getItem('mock_users') || '[]')
+  let changed = false
+  for (const seed of SEED_ACCOUNTS) {
+    if (!users.find(u => u.email === seed.email)) {
+      users.push(seed)
+      changed = true
+    }
+  }
+  if (changed) localStorage.setItem('mock_users', JSON.stringify(users))
+}
+
 export function useAuth() {
   const [user, setUser] = useState(null)
   const [session, setSession] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Get initial session
     const isMock = import.meta.env.VITE_SUPABASE_URL?.includes('your-project-ref');
-    
+
     if (isMock) {
+      // Ensure admin & seed accounts exist every time
+      ensureSeedAccounts()
+
       const stored = localStorage.getItem('mock_user')
       if (stored) {
         const u = JSON.parse(stored)
         setUser(u)
         setSession({ access_token: 'dummy-token', user: u })
       }
-      setLoading(false);
-      return;
+      setLoading(false)
+      return
     }
 
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -26,7 +51,7 @@ export function useAuth() {
       setUser(session?.user ?? null)
       setLoading(false)
     }).catch(err => {
-      console.warn("Supabase auth not configured properly:", err.message)
+      console.warn('Supabase auth not configured properly:', err.message)
       setLoading(false)
     })
 
@@ -44,13 +69,15 @@ export function useAuth() {
   const signIn = async ({ email, password }) => {
     const isMock = import.meta.env.VITE_SUPABASE_URL?.includes('your-project-ref');
     if (isMock) {
+      // Re-ensure seed accounts are present before every login attempt
+      ensureSeedAccounts()
       const users = JSON.parse(localStorage.getItem('mock_users') || '[]')
       const matched = users.find(u => u.email === email && u.password === password)
       if (!matched) {
-        return { data: null, error: { message: "Invalid email or password" } }
+        return { data: null, error: { message: 'Invalid email or password' } }
       }
       const mockUser = {
-        id: '00000000-0000-0000-0000-000000000000',
+        id: matched.id || '00000000-0000-0000-0000-000000000000',
         email,
         user_metadata: { full_name: matched.fullName, phone: matched.phone }
       }

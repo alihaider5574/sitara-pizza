@@ -8,17 +8,26 @@ const apiClient = axios.create({
   },
 })
 
-// Attach Supabase JWT to every request automatically if configured
+// Attach Supabase JWT (or mock token) to every request automatically
 apiClient.interceptors.request.use(async (config) => {
-  try {
-    if (import.meta.env.VITE_SUPABASE_URL && !import.meta.env.VITE_SUPABASE_URL.includes('your-project-ref')) {
+  const isMock = !import.meta.env.VITE_SUPABASE_URL ||
+    import.meta.env.VITE_SUPABASE_URL.includes('your-project-ref')
+
+  if (isMock) {
+    // In offline mode, read the mock session from localStorage
+    const stored = localStorage.getItem('mock_user')
+    if (stored) {
+      config.headers.Authorization = 'Bearer dummy-token'
+    }
+  } else {
+    try {
       const { data: { session } } = await supabase.auth.getSession()
       if (session?.access_token) {
         config.headers.Authorization = `Bearer ${session.access_token}`
       }
+    } catch (err) {
+      console.warn('Supabase auth skipped:', err.message)
     }
-  } catch (err) {
-    console.warn("Supabase auth skipped:", err.message)
   }
   return config
 })
@@ -27,7 +36,9 @@ apiClient.interceptors.request.use(async (config) => {
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const isMock = !import.meta.env.VITE_SUPABASE_URL ||
+      import.meta.env.VITE_SUPABASE_URL.includes('your-project-ref')
+    if (!isMock && error.response?.status === 401) {
       supabase.auth.signOut()
       window.location.href = '/login'
     }
