@@ -11,7 +11,7 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jose import JWTError, jwt
 
 from app.config import get_settings
-from app.db import get_supabase
+from app.db import get_supabase, get_pool
 
 bearer_scheme = HTTPBearer(auto_error=False)
 
@@ -36,8 +36,43 @@ async def get_current_user(
     """
     settings = get_settings()
 
-    # Fallback to local admin user if Supabase JWT secret is not set
-    if not settings.supabase_jwt_secret or (credentials and credentials.credentials == "dummy-token"):
+    # Fallback to local dummy-token processing for mock mode
+    if credentials and credentials.credentials.startswith("dummy-token"):
+        parts = credentials.credentials.split(":")
+        # If it's a legacy or simple dummy-token, treat as admin
+        if len(parts) == 1:
+            return CurrentUser(
+                user_id="00000000-0000-0000-0000-000000000000",
+                email="admin@sitara.com",
+                role="admin"
+            )
+        
+        user_id = parts[1] if len(parts) > 1 else "00000000-0000-0000-0000-000000000000"
+        email = parts[2] if len(parts) > 2 else "customer@sitara.com"
+        full_name = parts[3] if len(parts) > 3 else "Mock User"
+        phone = parts[4] if len(parts) > 4 else "00000000000"
+        role = "admin" if email == "admin@sitara.com" else "customer"
+
+        # Auto-create the profile in the DB so foreign keys and joins don't fail!
+        try:
+            import uuid as _uuid
+            uid = _uuid.UUID(user_id)  # convert string to UUID for asyncpg
+            pool = await get_pool()
+            row = await pool.fetchrow("SELECT id FROM profiles WHERE id = $1", uid)
+            if not row:
+                await pool.execute(
+                    """
+                    INSERT INTO profiles (id, email, full_name, phone, role)
+                    VALUES ($1, $2, $3, $4, $5)
+                    """,
+                    uid, email, full_name, phone, role
+                )
+        except Exception as e:
+            print("ERROR INSERTING PROFILE:", e)
+
+        return CurrentUser(user_id=user_id, email=email, role=role)
+
+    if not settings.supabase_jwt_secret:
         return CurrentUser(
             user_id="00000000-0000-0000-0000-000000000000",
             email="admin@sitara.com",

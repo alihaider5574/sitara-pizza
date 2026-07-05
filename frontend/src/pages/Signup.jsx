@@ -13,7 +13,7 @@ import toast from 'react-hot-toast'
 const signupSchema = z.object({
   fullName: z.string().min(2, 'Full name is required'),
   email: z.string().email('Invalid email address'),
-  phone: z.string().min(10, 'Enter a valid phone number').optional().or(z.literal('')),
+  phone: z.string().min(10, 'Enter a valid phone number (min 10 digits)'),
   password: z.string().min(8, 'Password must be at least 8 characters'),
   confirmPassword: z.string(),
 }).refine((data) => data.password === data.confirmPassword, {
@@ -37,8 +37,8 @@ export default function Signup() {
     if (error) {
       toast.error(error.message || 'Signup failed')
     } else {
-      toast.success('Account created! Check your email to confirm.')
-      navigate('/login')
+      toast.success('Account created successfully!')
+      navigate('/account')
     }
     setLoading(false)
   }
@@ -58,9 +58,7 @@ export default function Signup() {
       <div className="w-full max-w-md relative z-10">
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center gap-2 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-gradient-neon flex items-center justify-center shadow-md">
-              <Zap className="w-5 h-5 text-text-primary" />
-            </div>
+            <img src="/logo.jpg" alt="Sitara Logo" className="w-12 h-12 object-contain rounded-full shadow-md" />
             <span className="font-display font-bold text-xl text-text-primary">Sitara</span>
           </Link>
           <h1 className="font-display font-bold text-2xl text-text-primary">Create Account</h1>
@@ -80,7 +78,7 @@ export default function Signup() {
               {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email.message}</p>}
             </div>
             <div>
-              <label className="block text-text-secondary text-xs font-body mb-1.5">Phone (optional)</label>
+              <label className="block text-text-secondary text-xs font-body mb-1.5">Phone *</label>
               <input {...register('phone')} id="signup-phone" type="tel" placeholder="+92 300 0000000" className={inputCls} />
               {errors.phone && <p className="text-red-400 text-xs mt-1">{errors.phone.message}</p>}
             </div>

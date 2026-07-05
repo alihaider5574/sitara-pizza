@@ -84,21 +84,30 @@ export default function Checkout() {
   const handlePlaceOrder = async () => {
     setPlacing(true)
     
-    const orderData = {
-      items: items.map(item => ({
-        menu_item_id: item.id,
-        variant_id: item.variant?.id || null,
-        quantity: item.quantity,
-        addon_ids: (item.addons || []).map(a => a.id),
-        notes: item.notes || null,
-      })),
-      address_id: "00000000-0000-0000-0000-000000000000", // fallback default address
-      promo_code: promoCode || null,
-      payment_method: paymentMethod,
-      notes: null,
-    }
-
     try {
+      // 1. Save address to DB first
+      const addrRes = await apiClient.post('/api/addresses', {
+        address_line: address.address_line,
+        city: address.city,
+        label: address.label || null,
+      })
+      const savedAddressId = addrRes.data.id
+
+      // 2. Place order with real address_id
+      const orderData = {
+        items: items.map(item => ({
+          menu_item_id: item.id,
+          variant_id: item.variant?.id || null,
+          quantity: item.quantity,
+          addon_ids: (item.addons || []).map(a => a.id),
+          notes: item.notes || null,
+        })),
+        address_id: savedAddressId,
+        promo_code: promoCode || null,
+        payment_method: paymentMethod,
+        notes: null,
+      }
+
       const res = await apiClient.post('/api/orders', orderData)
       clearCart()
       toast.success("Order placed successfully!")
@@ -191,7 +200,7 @@ export default function Checkout() {
                         <input
                           {...register('city')}
                           id="checkout-city"
-                          placeholder="Karachi"
+                          placeholder="Shahkot"
                           className="w-full bg-bg-elevated border border-white/8 rounded-xl px-4 py-3 text-text-primary text-sm font-body focus:border-brand-primary/40 transition-colors"
                         />
                         {errors.city && (

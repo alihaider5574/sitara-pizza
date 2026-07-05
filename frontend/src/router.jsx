@@ -6,6 +6,7 @@ import { useAuth } from './hooks/useAuth'
 // Pages
 import Home from './pages/Home'
 import Menu from './pages/Menu'
+import Deals from './pages/Deals'
 import ProductDetail from './pages/ProductDetail'
 import Checkout from './pages/Checkout'
 import OrderTracking from './pages/OrderTracking'
@@ -30,13 +31,24 @@ function NotFound() {
   )
 }
 
-function ProtectedRoute({ children, adminOnly = false }) {
+function ProtectedRoute({ children, role = 'customer' }) {
   const { user, loading } = useAuth()
   if (loading) return null
-  if (!user) return <Navigate to={adminOnly ? "/admin/login" : "/login"} replace />
-  if (adminOnly && user.email !== 'admin@sitara.com') {
+
+  if (!user) {
+    return <Navigate to={role === 'admin' ? "/admin/login" : "/login"} replace />
+  }
+
+  const userRole = user.email === 'admin@sitara.com' ? 'admin' : 'customer'
+
+  if (role === 'admin' && userRole !== 'admin') {
     return <Navigate to="/admin/login" replace />
   }
+
+  if (role === 'customer' && userRole !== 'customer') {
+    return <Navigate to="/admin" replace />
+  }
+
   return children
 }
 
@@ -49,28 +61,29 @@ export default function AppRouter() {
         {/* Public */}
         <Route path="/" element={<Home />} />
         <Route path="/menu" element={<Menu />} />
+        <Route path="/deals" element={<Deals />} />
         <Route path="/menu/:itemId" element={<ProductDetail />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
         {/* Protected */}
         <Route path="/checkout" element={
-          <ProtectedRoute><Checkout /></ProtectedRoute>
+          <ProtectedRoute role="customer"><Checkout /></ProtectedRoute>
         } />
         <Route path="/track/:orderId?" element={
-          <ProtectedRoute><OrderTracking /></ProtectedRoute>
+          <ProtectedRoute role="customer"><OrderTracking /></ProtectedRoute>
         } />
         <Route path="/track" element={
-          <ProtectedRoute><OrderTracking /></ProtectedRoute>
+          <ProtectedRoute role="customer"><OrderTracking /></ProtectedRoute>
         } />
         <Route path="/account" element={
-          <ProtectedRoute><Account /></ProtectedRoute>
+          <ProtectedRoute role="customer"><Account /></ProtectedRoute>
         } />
 
         {/* Admin */}
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/*" element={
-          <ProtectedRoute adminOnly><AdminDashboard /></ProtectedRoute>
+          <ProtectedRoute role="admin"><AdminDashboard /></ProtectedRoute>
         } />
 
         {/* 404 */}

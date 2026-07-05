@@ -14,10 +14,12 @@ apiClient.interceptors.request.use(async (config) => {
     import.meta.env.VITE_SUPABASE_URL.includes('your-project-ref')
 
   if (isMock) {
-    // In offline mode, read the mock session from localStorage
     const stored = localStorage.getItem('mock_user')
     if (stored) {
-      config.headers.Authorization = 'Bearer dummy-token'
+      const u = JSON.parse(stored)
+      const fullName = u.user_metadata?.full_name || 'Mock User'
+      const phone = u.user_metadata?.phone || '0000000'
+      config.headers.Authorization = `Bearer dummy-token:${u.id}:${u.email}:${fullName}:${phone}`
     }
   } else {
     try {

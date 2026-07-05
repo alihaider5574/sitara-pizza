@@ -153,7 +153,7 @@ async def get_order(
         raise HTTPException(status_code=404, detail="Order not found")
 
     order = dict(row)
-    if order["user_id"] != current_user.user_id and not current_user.is_admin:
+    if str(order["user_id"]) != str(current_user.user_id) and not current_user.is_admin:
         raise HTTPException(status_code=403, detail="Access denied")
 
     return order

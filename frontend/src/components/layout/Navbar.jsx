@@ -30,10 +30,6 @@ export default function Navbar() {
     { to: '/track', label: 'Track Order' },
   ]
 
-  if (user?.email === 'admin@sitara.com') {
-    navLinks.push({ to: '/admin', label: 'Admin Panel' })
-  }
-
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -45,9 +41,7 @@ export default function Navbar() {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 group" id="nav-logo">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-primary to-brand-secondary flex items-center justify-center animate-pulse-glow">
-            <Zap className="w-4 h-4 text-text-primary" />
-          </div>
+          <img src="/logo.jpg" alt="Sitara Logo" className="w-10 h-10 object-contain rounded-full shadow-md" />
           <span className="font-display font-bold text-lg text-text-primary group-hover:neon-text transition-all">
             Sitara
           </span>

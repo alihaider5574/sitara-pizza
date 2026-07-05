@@ -1,4 +1,6 @@
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
+import apiClient from '../lib/apiClient'
 import { motion } from 'framer-motion'
 import { pageVariants } from '../animations/pageTransitions'
 import OrderStatusTracker from '../components/order/OrderStatusTracker'
@@ -8,7 +10,20 @@ import Skeleton from '../components/ui/Skeleton'
 
 export default function OrderTracking() {
   const { orderId } = useParams()
+  const navigate = useNavigate()
   const { order, status, loading } = useRealtimeOrder(orderId)
+
+  useEffect(() => {
+    if (!orderId) {
+      apiClient.get('/api/orders/me')
+        .then(res => {
+          if (res.data && res.data.length > 0) {
+            navigate(`/track/${res.data[0].id}`, { replace: true })
+          }
+        })
+        .catch(err => console.error('Failed to fetch latest order:', err))
+    }
+  }, [orderId, navigate])
 
   return (
     <motion.div

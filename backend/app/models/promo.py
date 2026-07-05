@@ -31,5 +31,7 @@ class CreatePromoRequest(BaseModel):
     discount_percent: Optional[float] = Field(None, ge=0, le=100)
     discount_flat: Optional[float] = Field(None, ge=0)
     min_order_amount: float = 0.0
+    max_uses: Optional[int] = Field(None, ge=1)
     expires_at: Optional[datetime] = None
     active: bool = True
+

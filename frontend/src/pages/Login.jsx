@@ -9,6 +9,7 @@ import { pageVariants } from '../animations/pageTransitions'
 import { useAuth } from '../hooks/useAuth'
 import Button from '../components/ui/Button'
 import toast from 'react-hot-toast'
+import { useEffect } from 'react'
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -18,8 +19,18 @@ const loginSchema = z.object({
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
-  const { signIn, signInWithGoogle } = useAuth()
+  const { signIn, signInWithGoogle, user } = useAuth()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (user) {
+      if (user.email === 'admin@sitara.com') {
+        navigate('/admin', { replace: true })
+      } else {
+        navigate('/', { replace: true })
+      }
+    }
+  }, [user, navigate])
 
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: zodResolver(loginSchema),
@@ -30,11 +41,11 @@ export default function Login() {
     const { error } = await signIn({ email, password })
     if (error) {
       toast.error(error.message || 'Login failed')
+      setLoading(false)
     } else {
       toast.success('Welcome back!')
-      navigate('/')
+      // Navigation is handled by useEffect to prevent race conditions with AuthContext state updates.
     }
-    setLoading(false)
   }
 
   const handleGoogle = async () => {
@@ -58,9 +69,7 @@ export default function Login() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center gap-2 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-gradient-neon flex items-center justify-center shadow-md">
-              <Zap className="w-5 h-5 text-text-primary" />
-            </div>
+            <img src="/logo.jpg" alt="Sitara Logo" className="w-12 h-12 object-contain rounded-full shadow-md" />
             <span className="font-display font-bold text-xl text-text-primary">Sitara</span>
           </Link>
           <h1 className="font-display font-bold text-2xl text-text-primary">Welcome Back</h1>

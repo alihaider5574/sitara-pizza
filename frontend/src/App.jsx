@@ -1,9 +1,10 @@
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, useLocation } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'react-hot-toast'
 import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
 import CartDrawer from './components/cart/CartDrawer'
+import { AuthProvider } from './hooks/useAuth'
 import AppRouter from './router'
 
 const queryClient = new QueryClient({
@@ -15,18 +16,37 @@ const queryClient = new QueryClient({
   },
 })
 
+function AppLayout() {
+  const location = useLocation()
+  const isAdminRoute = location.pathname.startsWith('/admin')
+
+  if (isAdminRoute) {
+    // Admin pages get a clean, standalone layout — no customer Navbar/Footer
+    return (
+      <div className="min-h-screen">
+        <AppRouter />
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex flex-col min-h-screen">
+      <Navbar />
+      <main className="flex-1">
+        <AppRouter />
+      </main>
+      <Footer />
+      <CartDrawer />
+    </div>
+  )
+}
+
 export default function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <div className="flex flex-col min-h-screen">
-          <Navbar />
-          <main className="flex-1">
-            <AppRouter />
-          </main>
-          <Footer />
-          <CartDrawer />
-        </div>
+    <AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <AppLayout />
 
         <Toaster
           position="top-right"
@@ -46,7 +66,8 @@ export default function App() {
             },
           }}
         />
-      </BrowserRouter>
-    </QueryClientProvider>
+        </BrowserRouter>
+      </QueryClientProvider>
+    </AuthProvider>
   )
 }

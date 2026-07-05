@@ -88,39 +88,73 @@ async def list_all_orders(
     """Return all orders, optionally filtered by status."""
     import json
     query = """
-        SELECT o.*, json_agg(oi.*) AS order_items,
-               json_build_object('full_name', p.full_name, 'phone', p.phone) AS profiles
+        SELECT o.*,
+               json_agg(
+                   json_build_object(
+                       'id', oi.id,
+                       'menu_item_id', oi.menu_item_id,
+                       'item_name', mi.name,
+                       'item_image', mi.image_url,
+                       'variant_id', oi.variant_id,
+                       'quantity', oi.quantity,
+                       'unit_price', oi.unit_price,
+                       'addons', oi.addons,
+                       'notes', oi.notes
+                   )
+               ) FILTER (WHERE oi.id IS NOT NULL) AS order_items,
+               json_build_object(
+                   'full_name', p.full_name,
+                   'phone', p.phone,
+                   'email', p.email
+               ) AS profiles,
+               json_build_object(
+                   'address_line', a.address_line,
+                   'city', a.city,
+                   'label', a.label
+               ) AS delivery_address
         FROM orders o
         LEFT JOIN order_items oi ON oi.order_id = o.id
+        LEFT JOIN menu_items mi ON mi.id = oi.menu_item_id
         LEFT JOIN profiles p ON p.id = o.user_id
+        LEFT JOIN addresses a ON a.id = o.address_id
     """
     params = []
     if status:
         query += " WHERE o.status = $1"
         params.append(status)
 
-    query += " GROUP BY o.id, p.full_name, p.phone ORDER BY o.created_at DESC"
+    query += " GROUP BY o.id, p.full_name, p.phone, p.email, a.address_line, a.city, a.label ORDER BY o.created_at DESC"
     rows = await pool.fetch(query, *params)
 
     result = []
     for r in rows:
         d = dict(r)
-        
+
         # Parse profiles JSON if returned as a string
-        if isinstance(d["profiles"], str):
+        if isinstance(d.get("profiles"), str):
             try:
                 d["profiles"] = json.loads(d["profiles"])
             except Exception:
                 d["profiles"] = None
-        d["profiles"] = d["profiles"] if (d["profiles"] and d["profiles"].get("full_name")) else None
+        if d.get("profiles") and not d["profiles"].get("full_name"):
+            d["profiles"] = None
+
+        # Parse delivery_address JSON if returned as a string
+        if isinstance(d.get("delivery_address"), str):
+            try:
+                d["delivery_address"] = json.loads(d["delivery_address"])
+            except Exception:
+                d["delivery_address"] = None
 
         # Parse order_items JSON if returned as a string
-        if isinstance(d["order_items"], str):
+        if isinstance(d.get("order_items"), str):
             try:
                 d["order_items"] = json.loads(d["order_items"])
             except Exception:
                 d["order_items"] = []
-                
+        if d.get("order_items") is None:
+            d["order_items"] = []
+
         result.append(d)
     return result
 

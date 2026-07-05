@@ -15,16 +15,14 @@ export default function Footer() {
           {/* Brand */}
           <div className="md:col-span-2">
             <Link to="/" className="flex items-center gap-2 mb-4">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-primary to-brand-secondary flex items-center justify-center shadow-md">
-                <Zap className="w-5 h-5 text-text-primary" />
-              </div>
+              <img src="/logo.jpg" alt="Sitara Logo" className="w-12 h-12 object-contain rounded-full shadow-md bg-white p-0.5" />
               <div>
                 <div className="font-display font-bold text-lg text-text-primary leading-none">Sitara</div>
                 <div className="text-xs text-text-muted font-body">Pizza & Fried Chicks</div>
               </div>
             </Link>
             <p className="text-text-secondary text-sm font-body leading-relaxed max-w-xs">
-              Karachi's most lit fast-food experience. Fire pizza, crispy chicks, legendary taste.
+              Shahkot's most lit fast-food experience. Fire pizza, crispy chicks, legendary taste.
               Order online, track in real-time.
             </p>
             <div className="flex items-center gap-3 mt-5">
@@ -78,19 +76,19 @@ export default function Footer() {
             <ul className="space-y-3">
               <li className="flex items-start gap-3 text-text-secondary text-sm font-body">
                 <Phone className="w-4 h-4 mt-0.5 text-brand-primary flex-shrink-0" />
-                <a href="tel:+92300000000" className="hover:text-text-primary transition-colors">
-                  +92 300 000 0000
+                <a href="tel:+923033056216" className="hover:text-text-primary transition-colors">
+                  03033056216
                 </a>
               </li>
               <li className="flex items-start gap-3 text-text-secondary text-sm font-body">
                 <Mail className="w-4 h-4 mt-0.5 text-brand-primary flex-shrink-0" />
-                <a href="mailto:hello@sitarapizza.com" className="hover:text-text-primary transition-colors">
-                  hello@sitarapizza.com
+                <a href="mailto:haider3056216@gmail.com" className="hover:text-text-primary transition-colors">
+                  haider3056216@gmail.com
                 </a>
               </li>
               <li className="flex items-start gap-3 text-text-secondary text-sm font-body">
                 <MapPin className="w-4 h-4 mt-0.5 text-brand-primary flex-shrink-0" />
-                <span>Karachi, Pakistan</span>
+                <span>Shahkot, Pakistan</span>
               </li>
             </ul>
 

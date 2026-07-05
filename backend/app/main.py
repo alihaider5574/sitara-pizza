@@ -7,7 +7,7 @@ from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 
 from app.config import get_settings
-from app.routers import menu, cart, orders, promo, payments, admin
+from app.routers import menu, cart, orders, promo, payments, admin, addresses
 
 # ─── Rate Limiter ─────────────────────────────────────────────────────────────
 limiter = Limiter(key_func=get_remote_address)
@@ -41,6 +41,7 @@ app.include_router(orders.router)
 app.include_router(promo.router)
 app.include_router(payments.router)
 app.include_router(admin.router)
+app.include_router(addresses.router)
 
 
 # ─── Health Check ─────────────────────────────────────────────────────────────

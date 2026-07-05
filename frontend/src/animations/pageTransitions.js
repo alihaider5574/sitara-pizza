@@ -11,7 +11,7 @@ export const pageVariants = {
     y: 0,
     scale: 1,
     transition: {
-      duration: 0.4,
+      duration: 0.2,
       ease: [0.22, 1, 0.36, 1],
     },
   },
@@ -20,7 +20,7 @@ export const pageVariants = {
     y: -10,
     scale: 0.98,
     transition: {
-      duration: 0.25,
+      duration: 0.15,
       ease: 'easeIn',
     },
   },
@@ -30,7 +30,7 @@ export const pageVariants = {
 export const staggerContainer = {
   animate: {
     transition: {
-      staggerChildren: 0.08,
+      staggerChildren: 0.03,
     },
   },
 }
@@ -40,7 +40,7 @@ export const staggerItem = {
   animate: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.2, ease: [0.22, 1, 0.36, 1] },
   },
 }
 
@@ -55,7 +55,7 @@ export const slideInRight = {
   exit: {
     x: '100%',
     opacity: 0,
-    transition: { duration: 0.25, ease: 'easeIn' },
+    transition: { duration: 0.15, ease: 'easeIn' },
   },
 }
 
@@ -65,7 +65,7 @@ export const cardHover = {
   hover: {
     scale: 1.03,
     y: -6,
-    transition: { duration: 0.25, ease: 'easeOut' },
+    transition: { duration: 0.15, ease: 'easeOut' },
   },
 }
 
@@ -75,7 +75,7 @@ export const fadeUp = {
   animate: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] },
   },
 }
 
@@ -85,11 +85,11 @@ export const scaleIn = {
   animate: {
     opacity: 1,
     scale: 1,
-    transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.2, ease: [0.22, 1, 0.36, 1] },
   },
   exit: {
     opacity: 0,
     scale: 0.92,
-    transition: { duration: 0.2, ease: 'easeIn' },
+    transition: { duration: 0.1, ease: 'easeIn' },
   },
 }

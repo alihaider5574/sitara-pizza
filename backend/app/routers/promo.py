@@ -51,3 +51,19 @@ async def validate_promo(
         return ValidatePromoResponse(valid=False, discount=0.0, message="Invalid promo configuration")
 
     return ValidatePromoResponse(valid=True, discount=discount, message=message)
+
+
+@router.get("/active", response_model=list[dict])
+async def get_active_promos(
+    pool: asyncpg.Pool = Depends(get_pool),
+):
+    """Get a list of active promo codes for the Deals page."""
+    rows = await pool.fetch(
+        """
+        SELECT code, discount_percent, discount_flat, min_order_amount, expires_at 
+        FROM promo_codes 
+        WHERE active = TRUE AND (expires_at IS NULL OR expires_at > NOW())
+        ORDER BY created_at DESC
+        """
+    )
+    return [dict(r) for r in rows]

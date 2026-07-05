@@ -9,6 +9,7 @@ import { pageVariants } from '../../animations/pageTransitions'
 import { useAuth } from '../../hooks/useAuth'
 import Button from '../../components/ui/Button'
 import toast from 'react-hot-toast'
+import { useEffect } from 'react'
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -18,8 +19,14 @@ const loginSchema = z.object({
 export default function AdminLogin() {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
-  const { signIn } = useAuth()
+  const { signIn, user } = useAuth()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (user && user.email === 'admin@sitara.com') {
+      navigate('/admin', { replace: true })
+    }
+  }, [user, navigate])
 
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: zodResolver(loginSchema),
@@ -38,11 +45,11 @@ export default function AdminLogin() {
     const { data, error } = await signIn({ email, password })
     if (error) {
       toast.error(error.message || 'Login failed')
+      setLoading(false)
     } else {
       toast.success('Welcome back, Admin!')
-      navigate('/admin')
+      // Navigation is handled by useEffect to prevent race conditions with AuthContext state updates.
     }
-    setLoading(false)
   }
 
   const inputCls = 'w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-primary text-sm font-body focus:border-brand-primary/40 transition-colors'
@@ -58,8 +65,8 @@ export default function AdminLogin() {
       <div className="w-full max-w-md relative z-10">
         {/* Logo / Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-brand-primary/10 mb-4">
-            <ShieldCheck className="w-6 h-6 text-brand-primary" />
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white shadow-md mb-4 p-1">
+            <img src="/logo.jpg" alt="Sitara Logo" className="w-full h-full object-contain rounded-full" />
           </div>
           <h1 className="font-display font-bold text-2xl text-text-primary">Sitara Pizza</h1>
           <p className="text-text-secondary font-body text-sm mt-1">Admin Portal Login</p>

@@ -37,7 +37,7 @@ export default function HeroSection() {
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-gray-100 shadow-sm">
             <Star className="w-4 h-4 text-brand-secondary fill-brand-secondary" />
-            <span className="text-sm font-semibold text-text-primary">Karachi's #1 Rated Fast Food</span>
+            <span className="text-sm font-semibold text-text-primary">Shahkot's #1 Rated Fast Food</span>
           </div>
 
           <h1 className="font-display text-5xl md:text-7xl font-bold leading-[1.1] text-text-primary tracking-tight">
