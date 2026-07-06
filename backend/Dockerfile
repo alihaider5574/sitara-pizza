@@ -18,9 +18,4 @@ COPY . .
 EXPOSE 8000
 
 # Run with Gunicorn + Uvicorn workers for production
-CMD ["gunicorn", "app.main:app", \
-     "--workers", "2", \
-     "--worker-class", "uvicorn.workers.UvicornWorker", \
-     "--bind", "0.0.0.0:8000", \
-     "--access-logfile", "-", \
-     "--error-logfile", "-"]
+CMD gunicorn app.main:app --workers 2 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:${PORT:-8000} --access-logfile - --error-logfile -
