@@ -18,9 +18,11 @@ COPY . .
 EXPOSE 8000
 
 # Run with Gunicorn + Uvicorn workers for production
+# Use $PORT environment variable (defaults to 8000 if not set)
 CMD ["gunicorn", "app.main:app", \
      "--workers", "2", \
      "--worker-class", "uvicorn.workers.UvicornWorker", \
-     "--bind", "0.0.0.0:8000", \
+     "--bind", "0.0.0.0:${PORT:-8000}", \
      "--access-logfile", "-", \
      "--error-logfile", "-"]
+
