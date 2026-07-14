@@ -768,6 +768,52 @@ export default function AdminDashboard() {
     }
   })
 
+  // ─── Categories Mutations ───
+  const [categoryModalOpen, setCategoryModalOpen] = useState(false)
+  const [editingCategory, setEditingCategory] = useState(null)
+  
+  const createCategoryMutation = useMutation({
+    mutationFn: async (data) => {
+      return apiClient.post('/api/admin/categories', null, { params: data })
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['categories'] })
+      toast.success("Category created!")
+      setCategoryModalOpen(false)
+    },
+    onError: (err) => {
+      toast.error(err.response?.data?.detail || "Failed to create category")
+    }
+  })
+
+  const updateCategoryMutation = useMutation({
+    mutationFn: async ({ categoryId, data }) => {
+      return apiClient.put(`/api/admin/categories/${categoryId}`, null, { params: data })
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['categories'] })
+      toast.success("Category updated!")
+      setCategoryModalOpen(false)
+      setEditingCategory(null)
+    },
+    onError: (err) => {
+      toast.error(err.response?.data?.detail || "Failed to update category")
+    }
+  })
+
+  const deleteCategoryMutation = useMutation({
+    mutationFn: async (categoryId) => {
+      return apiClient.delete(`/api/admin/categories/${categoryId}`)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['categories'] })
+      toast.success("Category deleted!")
+    },
+    onError: (err) => {
+      toast.error(err.response?.data?.detail || "Failed to delete category")
+    }
+  })
+
   // ─── Handlers ───────────────────────────────────────────────────────────────
   const handleSaveMenuItem = (data) => {
     if (editingItem) {
@@ -801,6 +847,7 @@ export default function AdminDashboard() {
     { id: 'overview', label: 'Overview', icon: LayoutDashboard },
     { id: 'orders', label: 'Orders', icon: ShoppingBag, badge: analytics.pending_orders || 0 },
     { id: 'menu', label: 'Menu', icon: UtensilsCrossed },
+    { id: 'categories', label: 'Categories', icon: Tag },
     { id: 'promos', label: 'Promos', icon: Tag },
   ]
 
@@ -982,6 +1029,91 @@ export default function AdminDashboard() {
                     />
                   ))}
                 </div>
+              )}
+            </div>
+          )}
+
+          {/* ── Categories ── */}
+          {activeTab === 'categories' && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h1 className="font-display font-bold text-2xl text-text-primary">Category Management</h1>
+                <Button variant="neon" size="sm" onClick={() => { setEditingCategory(null); setCategoryModalOpen(true); }} id="admin-add-category">
+                  <Plus className="w-4 h-4" /> Add Category
+                </Button>
+              </div>
+
+              {isLoadingMenu ? (
+                <div className="h-40 bg-gray-200 animate-pulse rounded-xl" />
+              ) : categories.length === 0 ? (
+                <div className="glass-card p-12 text-center">
+                  <Tag className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                  <p className="text-text-secondary text-sm font-body mb-4">No categories found.</p>
+                  <Button variant="neon" size="sm" onClick={() => { setEditingCategory(null); setCategoryModalOpen(true); }}>
+                    <Plus className="w-4 h-4" /> Add Your First Category
+                  </Button>
+                </div>
+              ) : (
+                <div className="glass-card overflow-hidden">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-gray-100 bg-gray-50">
+                        <th className="text-left py-3 px-4 text-text-secondary font-body font-medium text-xs uppercase tracking-wider">Name</th>
+                        <th className="text-left py-3 px-4 text-text-secondary font-body font-medium text-xs uppercase tracking-wider">Slug</th>
+                        <th className="text-left py-3 px-4 text-text-secondary font-body font-medium text-xs uppercase tracking-wider">Order</th>
+                        <th className="text-left py-3 px-4 text-text-secondary font-body font-medium text-xs uppercase tracking-wider">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {categories.sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0)).map((cat) => (
+                        <tr key={cat.id} className="border-b border-gray-100 last:border-none hover:bg-gray-50 transition-colors">
+                          <td className="py-3 px-4 font-display font-semibold text-text-primary text-xs">{cat.name}</td>
+                          <td className="py-3 px-4 text-text-secondary text-xs">{cat.slug}</td>
+                          <td className="py-3 px-4 text-text-secondary text-xs">{cat.sort_order}</td>
+                          <td className="py-3 px-4">
+                            <div className="flex items-center gap-1.5">
+                              <button
+                                onClick={() => { setEditingCategory(cat); setCategoryModalOpen(true); }}
+                                className="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 flex items-center justify-center transition-colors"
+                                title="Edit"
+                              >
+                                <Pencil className="w-3.5 h-3.5" />
+                              </button>
+                              <button
+                                onClick={() => {
+                                  if (window.confirm("Are you sure you want to delete this category? Items in this category might lose their category association.")) {
+                                    deleteCategoryMutation.mutate(cat.id)
+                                  }
+                                }}
+                                className="w-7 h-7 rounded-lg bg-red-50 text-red-500 hover:bg-red-100 flex items-center justify-center transition-colors"
+                                title="Delete"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+              {/* Category Modal */}
+              {categoryModalOpen && (
+                <CategoryModal
+                  isOpen={categoryModalOpen}
+                  onClose={() => { setCategoryModalOpen(false); setEditingCategory(null); }}
+                  category={editingCategory}
+                  onSave={(data) => {
+                    if (editingCategory) {
+                      updateCategoryMutation.mutate({ categoryId: editingCategory.id, data })
+                    } else {
+                      createCategoryMutation.mutate(data)
+                    }
+                  }}
+                  isSaving={createCategoryMutation.isPending || updateCategoryMutation.isPending}
+                />
               )}
             </div>
           )}
@@ -1208,3 +1340,93 @@ export default function AdminDashboard() {
     </motion.div>
   )
 }
+
+// ─── Category Modal ───────────────────────────────────────────────────────────
+function CategoryModal({ isOpen, onClose, category, onSave, isSaving }) {
+  const isEdit = Boolean(category)
+  const [form, setForm] = useState({
+    name: category?.name || '',
+    slug: category?.slug || '',
+    sort_order: category?.sort_order || 0,
+  })
+
+  // Auto-generate slug from name if not editing
+  const handleNameChange = (e) => {
+    const name = e.target.value
+    if (!isEdit && (!form.slug || form.slug === form.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''))) {
+      setForm({
+        ...form,
+        name,
+        slug: name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+      })
+    } else {
+      setForm({ ...form, name })
+    }
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (!form.name.trim() || !form.slug.trim()) {
+      toast.error('Name and slug are required')
+      return
+    }
+    onSave({
+      name: form.name.trim(),
+      slug: form.slug.trim(),
+      sort_order: Number(form.sort_order),
+    })
+  }
+
+  return (
+    <Modal isOpen={isOpen} onClose={onClose} title={isEdit ? "Edit Category" : "Add Category"}>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block text-xs font-display font-semibold text-text-secondary mb-1">Category Name *</label>
+          <input
+            type="text"
+            required
+            value={form.name}
+            onChange={handleNameChange}
+            className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2 text-text-primary text-sm font-body focus:border-brand-primary/40 focus:ring-4 focus:ring-brand-primary/10 transition-all outline-none"
+            placeholder="e.g. Fried Chicken"
+          />
+        </div>
+
+        <div>
+          <label className="block text-xs font-display font-semibold text-text-secondary mb-1">Slug *</label>
+          <input
+            type="text"
+            required
+            value={form.slug}
+            onChange={(e) => setForm({ ...form, slug: e.target.value })}
+            className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2 text-text-primary text-sm font-body focus:border-brand-primary/40 focus:ring-4 focus:ring-brand-primary/10 transition-all outline-none"
+            placeholder="e.g. fried-chicken"
+          />
+          <p className="text-[10px] text-text-secondary mt-1">Used in URL (e.g. /menu?category=fried-chicken)</p>
+        </div>
+
+        <div>
+          <label className="block text-xs font-display font-semibold text-text-secondary mb-1">Sort Order</label>
+          <input
+            type="number"
+            value={form.sort_order}
+            onChange={(e) => setForm({ ...form, sort_order: e.target.value })}
+            className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2 text-text-primary text-sm font-body focus:border-brand-primary/40 focus:ring-4 focus:ring-brand-primary/10 transition-all outline-none"
+            placeholder="0"
+          />
+          <p className="text-[10px] text-text-secondary mt-1">Lower numbers appear first (0, 1, 2...)</p>
+        </div>
+
+        <div className="flex gap-3 pt-4 border-t border-gray-100">
+          <Button type="button" variant="outline" className="flex-1" onClick={onClose} disabled={isSaving}>
+            Cancel
+          </Button>
+          <Button type="submit" variant="neon" className="flex-1" isLoading={isSaving}>
+            {isEdit ? 'Save Changes' : 'Create Category'}
+          </Button>
+        </div>
+      </form>
+    </Modal>
+  )
+}
+

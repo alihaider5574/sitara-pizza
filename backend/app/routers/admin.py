@@ -244,3 +244,37 @@ async def create_category(
         cat_id, name, slug, sort_order
     )
     return {"id": cat_id, "name": name, "slug": slug, "sort_order": sort_order}
+
+@router.put("/categories/{category_id}", response_model=dict)
+async def update_category(
+    category_id: str,
+    name: str,
+    slug: str,
+    sort_order: int = 0,
+    admin: CurrentUser = Depends(get_admin_user),
+    pool: asyncpg.Pool = Depends(get_pool),
+):
+    result = await pool.execute(
+        "UPDATE categories SET name = $1, slug = $2, sort_order = $3 WHERE id = $4",
+        name, slug, sort_order, category_id
+    )
+    if result == "UPDATE 0":
+        raise HTTPException(status_code=404, detail="Category not found")
+    return {"id": category_id, "name": name, "slug": slug, "sort_order": sort_order}
+
+@router.delete("/categories/{category_id}", response_model=dict)
+async def delete_category(
+    category_id: str,
+    admin: CurrentUser = Depends(get_admin_user),
+    pool: asyncpg.Pool = Depends(get_pool),
+):
+    # Optional: check if items exist in this category before deleting, or set them to null.
+    # Currently schema says category_id is nullable (or if we delete category we might want to cascade or restrict).
+    # Since we use UUID, let's just attempt to delete. If it violates FK, asyncpg throws an error.
+    try:
+        result = await pool.execute("DELETE FROM categories WHERE id = $1", category_id)
+        if result == "DELETE 0":
+            raise HTTPException(status_code=404, detail="Category not found")
+        return {"status": "deleted"}
+    except asyncpg.exceptions.ForeignKeyViolationError:
+        raise HTTPException(status_code=400, detail="Cannot delete category because it contains menu items. Reassign them first.")
