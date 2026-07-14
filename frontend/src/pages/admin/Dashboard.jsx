@@ -819,7 +819,7 @@ export default function AdminDashboard() {
   
   const createCategoryMutation = useMutation({
     mutationFn: async (data) => {
-      return apiClient.post('/api/admin/categories', null, { params: data })
+      return apiClient.post('/api/admin/categories', data)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['categories'] })
@@ -833,7 +833,7 @@ export default function AdminDashboard() {
 
   const updateCategoryMutation = useMutation({
     mutationFn: async ({ categoryId, data }) => {
-      return apiClient.put(`/api/admin/categories/${categoryId}`, null, { params: data })
+      return apiClient.put(`/api/admin/categories/${categoryId}`, data)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['categories'] })

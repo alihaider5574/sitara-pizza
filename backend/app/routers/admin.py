@@ -13,6 +13,17 @@ from app.models.order import UpdateOrderStatusRequest
 from app.models.promo import CreatePromoRequest
 from app.services.notifications import on_order_status_changed
 import uuid
+from pydantic import BaseModel
+
+class CategoryCreate(BaseModel):
+    name: str
+    slug: str
+    sort_order: int = 0
+
+class CategoryUpdate(BaseModel):
+    name: str
+    slug: str
+    sort_order: int = 0
 
 router = APIRouter(prefix="/api/admin", tags=["admin"])
 
@@ -247,9 +258,7 @@ async def list_promos(
 
 @router.post("/categories", response_model=dict)
 async def create_category(
-    name: str,
-    slug: str,
-    sort_order: int = 0,
+    request: CategoryCreate,
     admin: CurrentUser = Depends(get_admin_user),
     pool: asyncpg.Pool = Depends(get_pool),
 ):
@@ -257,24 +266,22 @@ async def create_category(
     try:
         await pool.execute(
             "INSERT INTO categories (id, name, slug, sort_order) VALUES ($1, $2, $3, $4)",
-            cat_id, name, slug, sort_order
+            cat_id, request.name, request.slug, request.sort_order
         )
     except asyncpg.exceptions.UniqueViolationError:
         raise HTTPException(status_code=400, detail="A category with this name or slug already exists.")
-    return {"id": cat_id, "name": name, "slug": slug, "sort_order": sort_order}
+    return {"id": cat_id, "name": request.name, "slug": request.slug, "sort_order": request.sort_order}
 
 @router.put("/categories/{category_id}", response_model=dict)
 async def update_category(
     category_id: str,
-    name: str,
-    slug: str,
-    sort_order: int = 0,
+    request: CategoryUpdate,
     admin: CurrentUser = Depends(get_admin_user),
     pool: asyncpg.Pool = Depends(get_pool),
 ):
     result = await pool.execute(
         "UPDATE categories SET name = $1, slug = $2, sort_order = $3 WHERE id = $4",
-        name, slug, sort_order, category_id
+        request.name, request.slug, request.sort_order, category_id
     )
     if result == "UPDATE 0":
         raise HTTPException(status_code=404, detail="Category not found")
