@@ -352,8 +352,13 @@ function MenuItemModal({ isOpen, onClose, item, categories, onSave, isSaving }) 
               className={inputClass}
               value={form.category_id}
               onChange={(e) => handleChange('category_id', e.target.value)}
+              disabled={categories.length === 0}
             >
-              <option value="">Select category</option>
+              <option value="">
+                {categories.length === 0 
+                  ? "⚠️ Create a category first! (Go to Categories tab)" 
+                  : "Select category"}
+              </option>
               {categories.map(c => (
                 <option key={c.id} value={c.id}>{c.name}</option>
               ))}
