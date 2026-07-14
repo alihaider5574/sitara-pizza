@@ -9,6 +9,17 @@ from slowapi.errors import RateLimitExceeded
 from app.config import get_settings
 from app.routers import menu, cart, orders, promo, payments, admin, addresses
 
+import os
+import cloudinary
+
+# ─── Cloudinary Config ────────────────────────────────────────────────────────
+cloudinary.config(
+    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME", "n7dwstwv"),
+    api_key=os.getenv("CLOUDINARY_API_KEY", "943535673528186"),
+    api_secret=os.getenv("CLOUDINARY_API_SECRET", "xP0rKcWOHjx3ZXE8xYa36Jos-iE"),
+    secure=True
+)
+
 # ─── Rate Limiter ─────────────────────────────────────────────────────────────
 limiter = Limiter(key_func=get_remote_address)
 

@@ -304,9 +304,35 @@ function MenuItemModal({ isOpen, onClose, item, categories, onSave, isSaving }) 
     is_spicy: item?.is_spicy ?? false,
     tags: Array.isArray(item?.tags) ? item.tags.join(', ') : '',
   })
+  const [isUploading, setIsUploading] = useState(false)
 
   const handleChange = (field, value) => {
     setForm(prev => ({ ...prev, [field]: value }))
+  }
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    setIsUploading(true)
+    const formData = new FormData()
+    formData.append('file', file)
+
+    try {
+      // Use the global apiClient which automatically attaches the admin token
+      const res = await apiClient.post('/api/admin/upload-image', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      })
+      if (res.data?.url) {
+        handleChange('image_url', res.data.url)
+        toast.success("Image uploaded successfully!")
+      }
+    } catch (err) {
+      console.error(err)
+      toast.error("Failed to upload image. Please try again.")
+    } finally {
+      setIsUploading(false)
+    }
   }
 
   const handleSubmit = (e) => {
@@ -393,19 +419,33 @@ function MenuItemModal({ isOpen, onClose, item, categories, onSave, isSaving }) 
             />
           </div>
           <div>
-            <label className={labelClass}>Image URL</label>
-            <div className="flex gap-2">
-              <input
-                id="menu-item-image"
-                className={`${inputClass} flex-1`}
-                value={form.image_url}
-                onChange={(e) => handleChange('image_url', e.target.value)}
-                placeholder="https://example.com/image.jpg"
-              />
+            <label className={labelClass}>Image Upload</label>
+            <div className="flex gap-2 items-center">
+              <div className="relative flex-1">
+                <input
+                  type="file"
+                  id="menu-item-image"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  disabled={isUploading}
+                  className="w-full bg-white border border-gray-200 rounded-xl px-4 py-2 text-text-primary text-sm font-body focus:border-brand-primary/40 focus:ring-2 focus:ring-brand-primary/10 file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-brand-primary/10 file:text-brand-primary hover:file:bg-brand-primary/20 transition-all cursor-pointer disabled:opacity-50"
+                />
+                {isUploading && (
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                    <div className="w-4 h-4 border-2 border-brand-primary border-t-transparent rounded-full animate-spin"></div>
+                  </div>
+                )}
+              </div>
               {form.image_url && (
-                <img src={form.image_url} alt="" className="w-10 h-10 rounded-lg object-cover border border-gray-200" />
+                <img src={form.image_url} alt="Preview" className="w-10 h-10 rounded-lg object-cover border border-gray-200 shadow-sm" />
               )}
             </div>
+            {form.image_url && (
+              <p className="text-[10px] text-emerald-600 mt-1 flex items-center gap-1 font-medium">
+                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                Image successfully securely uploaded to Cloudinary
+              </p>
+            )}
           </div>
         </div>
 
@@ -442,8 +482,8 @@ function MenuItemModal({ isOpen, onClose, item, categories, onSave, isSaving }) 
         </div>
 
         <div className="flex gap-3 pt-2">
-          <Button variant="ghost" type="button" onClick={onClose} id="menu-modal-cancel">Cancel</Button>
-          <Button variant="neon" type="submit" loading={isSaving} id="menu-modal-save" className="flex-1">
+          <Button variant="ghost" type="button" onClick={onClose} id="menu-modal-cancel" disabled={isUploading}>Cancel</Button>
+          <Button variant="neon" type="submit" loading={isSaving} disabled={isUploading} id="menu-modal-save" className="flex-1">
             {isEdit ? 'Save Changes' : 'Add Item'}
           </Button>
         </div>

@@ -3,7 +3,8 @@
 All routes here require role='admin' (enforced by get_admin_user dependency).
 """
 
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, UploadFile, File
+import cloudinary.uploader
 import asyncpg
 from app.db import get_pool
 from app.deps import get_admin_user, CurrentUser
@@ -15,6 +16,20 @@ import uuid
 
 router = APIRouter(prefix="/api/admin", tags=["admin"])
 
+
+# ─── File Upload ─────────────────────────────────────────────────────────────
+
+@router.post("/upload-image", response_model=dict)
+async def upload_image(
+    file: UploadFile = File(...),
+    admin: CurrentUser = Depends(get_admin_user),
+):
+    try:
+        # Cloudinary automatically handles file-like objects
+        result = cloudinary.uploader.upload(file.file, folder="sitara_menu")
+        return {"url": result.get("secure_url")}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Image upload failed: {str(e)}")
 
 # ─── Menu Management ──────────────────────────────────────────────────────────
 
@@ -239,10 +254,13 @@ async def create_category(
     pool: asyncpg.Pool = Depends(get_pool),
 ):
     cat_id = str(uuid.uuid4())
-    await pool.execute(
-        "INSERT INTO categories (id, name, slug, sort_order) VALUES ($1, $2, $3, $4)",
-        cat_id, name, slug, sort_order
-    )
+    try:
+        await pool.execute(
+            "INSERT INTO categories (id, name, slug, sort_order) VALUES ($1, $2, $3, $4)",
+            cat_id, name, slug, sort_order
+        )
+    except asyncpg.exceptions.UniqueViolationError:
+        raise HTTPException(status_code=400, detail="A category with this name or slug already exists.")
     return {"id": cat_id, "name": name, "slug": slug, "sort_order": sort_order}
 
 @router.put("/categories/{category_id}", response_model=dict)
